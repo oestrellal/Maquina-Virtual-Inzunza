@@ -27,12 +27,18 @@
     <ClInclude Include="St_Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VMInzunza.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Máquina Virtual Inzunza.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VMInzunza.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
