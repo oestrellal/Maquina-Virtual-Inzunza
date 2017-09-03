@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "VMInzunza.h"
 
+<<<<<<< HEAD
 #pragma region Instrucciones
 
 #define HALT 0;		//Finish.
@@ -59,14 +60,26 @@
 
 #pragma endregion
 
+=======
+>>>>>>> master
 
+#include "VMInzunza.h"
 
+using namespace std;
 int main()
 {
+<<<<<<< HEAD
 	VMInzunza *vm = new VMInzunza();
 
 
 
+=======
+	VMInzunza vm;
+	vm.load("C:/Users/admine0438883/Desktop/prueba");
+	vm.run();
+
+	getchar();
+>>>>>>> master
     return 0;
 }
 
