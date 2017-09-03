@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-
+#include <vector>
 using namespace std;
 
 class VMInzunza
@@ -16,11 +16,19 @@ public:
 
 private:
 	const string identifier= "UM-MEAN-C";
-	void setX(int direccion);
-	int getX();
-	int bin2dir(string direccion);
-	int IP; //Instruction pointer
-	char* CS; //code segment
-	char* DS; //data segment
+	string getString(unsigned int);
+	int getInt(unsigned int);//gets an int from specified data address
+	int getInt();// gets int from next 4 lines of code
+
+	void setX(unsigned int);
+	unsigned int getX();
+	unsigned int getDir();
+
+	unsigned int IP; //Instruction pointer
+	unsigned int X; //offset register
+	unsigned char* CS; //code segment
+	unsigned char* DS; //data segment
+	int flag; //value changes after cmp is casted
+	
 };
 
