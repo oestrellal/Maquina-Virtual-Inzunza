@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "VMInzunza.h"
 
 #pragma region Instrucciones
 
@@ -19,6 +20,10 @@
 #define PUSHKI 11;	//Inserts a constant int on top of the stack.
 #define PUSHKD 12;	//Inserts a constant double on top of the stack.
 #define PUSHKS 13;	//Inserts a constant string on top of the stack.
+#define PUSHAC 14;	//Inserts a char from an array using the offset register on top of the stack.
+#define PUSHAI 7;	//Inserts an int on top of the stack.
+#define PUSHAD 8;	//Inserts a double on top of the stack.
+#define PUSHAS 9;	//Inserts a string on top of the stack.
 #define POPC 14;	//Pops data from the stack as a char.
 #define POPI 15;	//Pops data from the stack as an int.
 #define POPD 16;	//Pops data from the stack as a double.
@@ -58,6 +63,10 @@
 
 int main()
 {
+	VMInzunza *vm = new VMInzunza();
+
+
+
     return 0;
 }
 
