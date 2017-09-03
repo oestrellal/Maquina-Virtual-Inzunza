@@ -54,10 +54,13 @@
 
 #pragma endregion
 
+#include "VMInzunza.h"
 
-
+using namespace std;
 int main()
 {
+	VMInzunza vm;
+	vm.load("C:/Users/admine0438883/Desktop/prueba");
     return 0;
 }
 
