@@ -24,10 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="St_Stack.h">
+    <ClInclude Include="VMInzunza.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VMInzunza.h">
+    <ClInclude Include="Stack_Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

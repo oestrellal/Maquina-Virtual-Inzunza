@@ -3,7 +3,7 @@
 
 #pragma region Instrucciones
 
-#define HALT '\0'		//Finish.
+#define HALT 0		//Finish.
 #define WR 1		//Writes a newline.
 #define WRC 2		//Writes a char.
 #define WRI 3		//Writes an int.
@@ -21,32 +21,40 @@
 #define PUSHAI 15	//Inserts an int from an array on top of the stack.
 #define PUSHAD 16	//Inserts a double from an array on top of the stack.
 #define PUSHAS 17	//Inserts a string from an array on top of the stack.
-#define POPC 14		//Pops data from the stack as a char.
-#define POPI 15		//Pops data from the stack as an int.
-#define POPD 16		//Pops data from the stack as a double.
-#define POPS 17		//Pops data from the stack as a string.
-#define POPX 18		//Pops from stack to pointer register (int).
-#define RDC 19		//Reads a char into memory.
-#define RDI 20		//Reads an int into memory.
-#define RDD 21		//Reads a double into memory.
-#define RDS 22		//Reads a string into memory.
-#define JMP 23		//Jumps indonditionally to a memory address.
-#define JEQ 24		//Jumps if the top of the stack is (==) 0.
-#define JNE 25		//Jumps if the top of the stack is different than (!=) 0.
-#define JGT 26		//Jumps if the top of the stack is greater than (>) 0.
-#define JGE 27		//Jumps if the top of the stack is greater or equal than (>=) 0.
-#define JLT 28		//Jumps if the top of the stack is less than (<) 0.
-#define JLE 29		//Jumps if the top of the stack is less or equal than (<=) 0.
-#define STX 30		//Stores a variable in the pointer register.
-#define STKX 31		//Stores a constant int in the pointer register.
-#define INC 32		//Increases the value of a memory address by 1.
-#define DEC 33		//Decreases the value of a memory address by 1.
-#define ADD 34		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
-#define SUB 35		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
-#define MUL 36		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
-#define DIV 37		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
-#define MOD 38		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
-#define CMP 39		//Compares 2 stack values by subtracting them and stores the result in the stack.
+#define POPC 18		//Pops data from the stack as a char.
+#define POPI 19		//Pops data from the stack as an int.
+#define POPD 20		//Pops data from the stack as a double.
+#define POPS 21		//Pops data from the stack as a string.
+#define POPAC 22	//Pops data from the stack as a char using the offset register.
+#define POPAI 23	//Pops data from the stack as a int using the offset register.
+#define POPAD 24	//Pops data from the stack as a double using the offset register.
+#define POPAS 25	//Pops data from the stack as a string using the offset register.
+#define POPX 26		//Pops from stack to pointer register (int).
+#define RDC 27		//Reads a char into memory.
+#define RDI 28		//Reads an int into memory.
+#define RDD 29		//Reads a double into memory.
+#define RDS 30		//Reads a string into memory.
+#define RDAC 31		//Reads a char into an array using the offset register.
+#define RDAI 32		//Reads a int into an array using the offset register.
+#define RDAD 33		//Reads a double into an array using the offset register.
+#define RDAS 34		//Reads a string into an array using the offset register.
+#define JMP 35		//Jumps indonditionally to a memory address.
+#define JEQ 36		//Jumps if the top of the stack is (==) 0.
+#define JNE 37		//Jumps if the top of the stack is different than (!=) 0.
+#define JGT 38		//Jumps if the top of the stack is greater than (>) 0.
+#define JGE 39		//Jumps if the top of the stack is greater or equal than (>=) 0.
+#define JLT 40		//Jumps if the top of the stack is less than (<) 0.
+#define JLE 41		//Jumps if the top of the stack is less or equal than (<=) 0.
+#define STX 42		//Stores a variable in the pointer register.
+#define STKX 43		//Stores a constant int in the pointer register.
+#define INC 44		//Increases the value of a memory address by 1.
+#define DEC 45		//Decreases the value of a memory address by 1.
+#define ADD 46		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
+#define SUB 47		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
+#define MUL 48		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
+#define DIV 49		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
+#define MOD 50		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
+#define CMP 51		//Compares 2 stack values by subtracting them and stores the result in the stack.
 
 #pragma endregion Mapa de Instrucciones a Byte
 
@@ -65,9 +73,9 @@ VMInzunza::~VMInzunza()
 {
 }
 
-//Prueba
-bool VMInzunza::load(string dir)
+
 //Encargado de leer archivo, verificar identificador, cardar porción de código y datos, e iniciar IP en 0
+bool VMInzunza::load(string dir)
 {
 	ifstream infile;
 	size_t length = 0;
