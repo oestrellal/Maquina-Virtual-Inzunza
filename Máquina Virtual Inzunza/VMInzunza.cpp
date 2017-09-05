@@ -243,6 +243,7 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			cin >> intContainer;
+			//Need method to write int to 4 bytes
 			DS[dir] = intContainer; //check this. Need to copy bit format into 4 bytes
 			break;
 		case RDD:
