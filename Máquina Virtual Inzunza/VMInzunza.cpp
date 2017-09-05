@@ -271,7 +271,7 @@ void VMInzunza::run()
 			}
 			DS[dir + i] = '\0';
 			break;
-			/*
+			
 		case RDAC:
 			IP++;
 			dir = getDir();
@@ -303,7 +303,7 @@ void VMInzunza::run()
 			}
 			DS[dir + i] = '\0';
 			break;
-			*/
+			
 		case STX:
 			IP++;
 			dir = getDir();
@@ -499,4 +499,14 @@ void VMInzunza::setX(unsigned int direccion)
 unsigned int VMInzunza::getX()
 {
 	return X;
+}
+//validates that the offset register is valid
+void VMInzunza::setY(unsigned int direccion)
+{
+	Y = direccion;
+}
+// returns the offset register value
+unsigned int VMInzunza::getY()
+{
+	return Y;
 }
