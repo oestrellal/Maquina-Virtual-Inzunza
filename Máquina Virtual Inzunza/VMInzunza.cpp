@@ -212,8 +212,15 @@ void VMInzunza::run()
 	while (CS[IP] != '\0') {
 		switch (CS[IP])
 		{
+#pragma region Halt
+
 		case HALT:
 			break;
+
+#pragma endregion
+
+#pragma region Write
+
 		case WR:
 			std::cout << endl;
 			IP++;
@@ -231,7 +238,7 @@ void VMInzunza::run()
 			intContainer = 0;
 			break;
 		case WRD:
-			IP ++;
+			IP++;
 			dir = getDir();
 			doubleContainer = getDouble(dir);
 			std::cout << doubleContainer;
@@ -244,6 +251,26 @@ void VMInzunza::run()
 			cout << stringContainer;
 			stringContainer = '\0';
 			break;
+
+#pragma endregion
+
+#pragma region Push
+		case PUSHC:
+			break;
+		case PUSHI:
+			break;
+		case PUSHD:
+			break;
+		case PUSHS:
+			break;
+#pragma endregion
+
+#pragma region Pop
+
+#pragma endregion
+
+#pragma region Read
+
 		case RDC:
 			IP++;
 			dir = getDir();
@@ -272,7 +299,6 @@ void VMInzunza::run()
 			}
 			DS[dir + i] = '\0';
 			break;
-			/*
 		case RDAC:
 			IP++;
 			dir = getDir();
@@ -293,7 +319,7 @@ void VMInzunza::run()
 			dir = dir + getX()*8;
 			setDouble(doubleContainer,dir);
 			break;
-		case RDAS:
+		/*case RDAS:
 			IP++;
 			dir = getDir();
 			cin >> stringContainer;
@@ -303,8 +329,12 @@ void VMInzunza::run()
 				DS[dir + i] = stringContainer[i];
 			}
 			DS[dir + i] = '\0';
-			break;
-			*/
+			break;*/
+
+#pragma endregion
+
+#pragma region Offset Register Manipulation
+
 		case STX:
 			IP++;
 			dir = getDir();
@@ -324,6 +354,15 @@ void VMInzunza::run()
 			}
 			setX(intContainer);
 			break;
+
+#pragma endregion
+
+#pragma region Operators
+
+#pragma endregion
+
+#pragma region Jumps
+
 		case JMP:
 			IP++;
 			dir = getDir();
@@ -332,39 +371,42 @@ void VMInzunza::run()
 		case JEQ:
 			IP++;
 			dir = getDir();
-			if(flag==0)
-			IP = dir;
+			if (flag == 0)
+				IP = dir;
 			break;
 		case JNE:
 			IP++;
 			dir = getDir();
 			if (flag != 0)
-			IP = dir;
+				IP = dir;
 			break;
 		case JGT:
 			IP++;
 			dir = getDir();
 			if (flag > 0)
-			IP = dir;
+				IP = dir;
 			break;
 		case JGE:
 			IP++;
 			dir = getDir();
 			if (flag >= 0)
-			IP = dir;
+				IP = dir;
 			break;
 		case JLT:
 			IP++;
 			dir = getDir();
 			if (flag < 0)
-			IP = dir;
+				IP = dir;
 			break;
 		case JLE:
 			IP++;
 			dir = getDir();
 			if (flag <= 0)
-			IP = dir;
+				IP = dir;
 			break;
+
+#pragma endregion
+	
 		}
 	}
 	std::cout << "Halted!" << endl;
