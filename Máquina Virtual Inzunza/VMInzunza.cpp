@@ -205,7 +205,7 @@ void VMInzunza::run()
 	unsigned int dir;
 	unsigned char charContainer;
 	int intContainer;
-	float floatContainer;
+	double doubleContainer;
 	string stringContainer;
 
 	while (CS[IP] != '\0') {
@@ -230,8 +230,11 @@ void VMInzunza::run()
 			intContainer = 0;
 			break;
 		case WRD:
-			IP += 1;
-			//We need to think about format
+			IP ++;
+			dir = getDir();
+			doubleContainer = getDouble(dir);
+			std::cout << doubleContainer;
+			doubleContainer = 0;
 			break;
 		case WRS:
 			IP++;
@@ -240,7 +243,6 @@ void VMInzunza::run()
 			cout << stringContainer;
 			stringContainer = '\0';
 			break;
-
 		case RDC:
 			IP++;
 			dir = getDir();
@@ -251,11 +253,13 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			cin >> intContainer;
-			DS[dir] = intContainer; //check this. Need to copy bit format into 4 bytes
+			setInt(dir);
 			break;
 		case RDD:
 			IP++;
-			//We need format
+			dir = getDir();
+			cin >> doubleContainer;
+			setDouble(dir);
 			break;
 		case RDS:
 			IP++;
@@ -270,15 +274,34 @@ void VMInzunza::run()
 			/*
 		case RDAC:
 			IP++;
+			dir = getDir();
+			cin >> charContainer;
+			DS[dir+getX()] = charContainer;
 			break;
 		case RDAI:
 			IP++;
+			dir = getDir();
+			cin >> intContainer;
+			dir=dir+getX()*4;
+			setInt(intContainer,dir);
 			break;
 		case RDAD:
 			IP++;
+			dir = getDir();
+			cin >> doubleContainer;
+			dir = dir + getX()*8;
+			setDouble(doubleContainer,dir);
 			break;
 		case RDAS:
 			IP++;
+			dir = getDir();
+			cin >> stringContainer;
+			int i;
+			dir = dir + getX()*maxStringSize;
+			for (i = 0; i < stringContainer.length(); i++) {
+				DS[dir + i] = stringContainer[i];
+			}
+			DS[dir + i] = '\0';
 			break;
 			*/
 		case STX:
@@ -358,26 +381,94 @@ unsigned int VMInzunza::getDir() {
 
 int VMInzunza::getInt(unsigned int dir) {
 
-	int value = 0;
+	union {
+		int value;
+		char bytes[sizeof(int)];
+	} u;
 	for (int i = 0; i < 4; i++) {
-		value = value << 8;  //check this
-		value += (int)DS[dir + i];
+		u.bytes[i] = DS[dir + i];
 	}
-	return value;
+	return u.value;
 
 }
 int VMInzunza::getInt() {
 
-	int value = 0;
+	union {
+		int value;
+		char bytes[sizeof(int)];
+	} u;
 	for (int i = 0; i < 4; i++) {
-		value = value << 8;  //check this
-		value += (int)CS[IP + i];
+		u.bytes[i] = CS[IP + i];
 	}
 	IP += 4;
-	return value;
+
+	return u.value;
+
 
 }
-//Writes a string until it finds the null char
+
+double VMInzunza::getDouble(unsigned int dir) {
+	
+	union {
+		double value;
+		char bytes[sizeof(double)];
+	} u;
+	for (int i = 0; i < 8; i++) {
+		u.bytes[i] = DS[dir + i];
+	}
+	return u.value;
+
+}
+double VMInzunza::getDouble() {
+
+	union {
+		double value;
+		char bytes[sizeof(double)];
+	} u;
+	for (int i = 0; i < 8; i++) {
+		u.bytes[i] = CS[IP + i];
+	}
+	IP += 8;
+	return u.value;
+
+}
+void VMInzunza::setInt(int toSave, unsigned int dir)
+{
+	union 
+	{
+			int value;
+			char bytes[sizeof(int)];
+	} u;
+
+	u.value = toSave;
+
+	for (int i = 0; i < 4; i++) {
+		DS[dir + i] = u.bytes[i];
+	}	
+}
+
+void VMInzunza::setDouble(double toSave,unsigned int dir)
+{
+	union 
+		{
+			double value;
+			char bytes[sizeof(int)];
+		} u;
+	u.value = toSave;
+	for (int i = 0; i < 8; i++) {
+		DS[dir + i] = u.bytes[i];
+	}
+}
+void VMInzunza::setString(string toSave,unsigned int dir)
+{
+	int i = 0;
+	for (i; i < toSave.length(); i++);
+	DS[dir + i] = toSave[i];
+	DS[dir + i] = '\0';
+}
+
+
+//Gets a string until it finds the null char
 string VMInzunza::getString(unsigned int dir) {
 	unsigned int next = dir;
 	string value = "";
@@ -385,6 +476,18 @@ string VMInzunza::getString(unsigned int dir) {
 		value += DS[next];
 		next++;
 	}
+	return value;
+}
+//gets a string until it finds the null char
+string VMInzunza::getString() {
+	unsigned int next = IP;
+	string value = "";
+	while (DS[next] != '\0') {
+		value += DS[next];
+		next++;
+		IP++;
+	}
+	IP++;
 	return value;
 }
 //validates that the offset register is valid
