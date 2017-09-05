@@ -208,6 +208,7 @@ void VMInzunza::run()
 	float floatContainer;
 	string stringContainer;
 
+	//Loop
 	while (CS[IP] != '\0') {
 		switch (CS[IP])
 		{
