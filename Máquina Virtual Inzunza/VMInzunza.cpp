@@ -299,6 +299,7 @@ void VMInzunza::run()
 			}
 			DS[dir + i] = '\0';
 			break;
+			
 		case RDAC:
 			IP++;
 			dir = getDir();
@@ -319,7 +320,7 @@ void VMInzunza::run()
 			dir = dir + getX()*8;
 			setDouble(doubleContainer,dir);
 			break;
-		/*case RDAS:
+		case RDAS:
 			IP++;
 			dir = getDir();
 			cin >> stringContainer;
@@ -542,4 +543,14 @@ void VMInzunza::setX(unsigned int direccion)
 unsigned int VMInzunza::getX()
 {
 	return X;
+}
+//validates that the offset register is valid
+void VMInzunza::setY(unsigned int direccion)
+{
+	Y = direccion;
+}
+// returns the offset register value
+unsigned int VMInzunza::getY()
+{
+	return Y;
 }

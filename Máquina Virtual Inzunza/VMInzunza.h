@@ -37,12 +37,16 @@ private:
 
 	void setX(unsigned int);
 	unsigned int getX();
+	void setY(unsigned int direccion);
+	unsigned int getY();
+
 	unsigned int getDir();
 
 
 
 	unsigned int IP; //Instruction pointer
 	unsigned int X; //offset register
+	unsigned int Y; //size of strings in string array
 	unsigned char* CS; //code segment
 	unsigned char* DS; //data segment
 	int flag; //value changes after cmp is casted
