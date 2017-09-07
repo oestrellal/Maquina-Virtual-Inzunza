@@ -10,10 +10,11 @@ int main()
 {
 	VMInzunza vm;
 
-	vm.load("C:/Users/admine0438883/Desktop/prueba");
+	vm.load("C:/Users/e0438883/Desktop/prueba.cea");
 	vm.run();
 
 	getchar();
+
 
     return 0;
 }

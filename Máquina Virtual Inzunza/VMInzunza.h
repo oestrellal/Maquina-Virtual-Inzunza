@@ -16,7 +16,7 @@ public:
 	void run();
 
 private:
-	stack<Stack_Object> stack;	//The operation stack.
+	//stack<Stack_Object> stack;	//The operation stack.
 
 	const string identifier= "UM-MEAN-C";
 
