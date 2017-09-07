@@ -86,7 +86,7 @@ VMInzunza::~VMInzunza()
 }
 
 
-//Encargado de leer archivo, verificar identificador, cardar porción de código y datos, e iniciar IP en 0
+//Encargado de leer archivo, verificar identificador, cardar porciÃ³n de cÃ³digo y datos, e iniciar IP en 0
 bool VMInzunza::load(string dir)
 {
 	ifstream infile;
@@ -153,7 +153,7 @@ bool VMInzunza::load(string dir)
 	sizeData.byte[3] = 0;
 	i += 2;
 
-	//error: check why ó is 242 instead of 168
+	//error: check why Ã³ is 242 instead of 168
 	CS = new unsigned char[sizeCode.value];
 	DS = new unsigned char[sizeData.value];
 
@@ -675,28 +675,17 @@ void VMInzunza::operationADD()
 {
 	char c, int i, double d;
 	string s;
+	DATA_TYPE tipo;
 	Stack_Object so1, so2, *nuevo;
-								// QUE PASA SI SE HACE UN POP Y EL STACK ESTA VACIO???
+
 	so1 = stack.top();
 	stack.pop();
 	so2 = stack.top();
 	stack.pop();
 
-	
+
 }
 
-//Gets a string until it finds the null char
-string VMInzunza::getString(unsigned int dir) {
-	unsigned int next = dir;
-	string value = "";
-	char temp = DS[next];
-
-	while (DS[next] != '\0') {
-		value += DS[next];
-		next++;
-		temp = DS[next];
-	}
-	return value;
 // Method that corresponds to the smart operator SUB.
 void VMInzunza::operationSUB()
 {
@@ -729,66 +718,130 @@ DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
 	//TODO ESTE COCHINERO SE PUEDE HACER MAS EFICIENTE.
 	switch (so1.tipo)
 	{
-	case DATA_TYPE::Char:
+	case Char:
 		switch (so2.tipo)
 		{
-		case DATA_TYPE::Char:
-			return DATA_TYPE::Char;
+		case Char:
+			c = so1.Char + so2.Char;
+			nuevo = new Stack_Object(c);
 			break;
-		case DATA_TYPE::Integer:
-			return DATA_TYPE::Integer;
+		case Integer:
+			i = (int)so1.Char + so2.Int;
+			nuevo = new Stack_Object(i);
 			break;
-		case DATA_TYPE::Double:
-			return DATA_TYPE::Double;
+		case Double:
+			d = (double)so1.Char + so2.Double;
+			nuevo = new Stack_Object(d);
 			break;
-		case DATA_TYPE::String:
-			return DATA_TYPE::String;
+		case String:
+			s = so1.Char;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
 			break;
 		default:
 			break;
 		}
 		break;
-	case DATA_TYPE::Integer:
+	case Integer:
 		switch (so2.tipo)
 		{
-		case DATA_TYPE::Char:
-		case DATA_TYPE::Integer:
-			return DATA_TYPE::Integer;
+		case Char:
+			i = so1.Int + (int)so2.Char;
+			nuevo = new Stack_Object(i);
 			break;
-		case DATA_TYPE::Double:
-			return DATA_TYPE::Double;
+		case Integer:
+			i = so1.Int + so2.Int;
+			nuevo = new Stack_Object(i);
 			break;
-		case DATA_TYPE::String:
-			return DATA_TYPE::String;
+		case Double:
+			d = (double)so1.Int + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Int;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
 			break;
 		default:
 			break;
 		}
 		break;
-	case DATA_TYPE::Double:
+	case Double:
 		switch (so2.tipo)
 		{
-		case DATA_TYPE::Char:
-		case DATA_TYPE::Integer:
-		case DATA_TYPE::Double:
-			return DATA_TYPE::Double;
+		case Char:
+			d = so1.Double + (double)so2.Char;
+			nuevo = new Stack_Object(d);
 			break;
-		case DATA_TYPE::String:
-			return DATA_TYPE::String;
+		case Integer:
+			d = so1.Double + (double)so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Double;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
 			break;
 		default:
 			break;
 		}
 		break;
-	case DATA_TYPE::String:
-		return DATA_TYPE::String;
+	case String:
+		switch (so2.tipo)
+		{
+		case Char:
+			s = so1.Char;
+			break;
+		case Integer:
+			s = so1.Int;
+			break;
+		case Double:
+			s = so1.Double;
+			break;
+		default:
+			s = so1.String;
+			break;
+		}
+		s.append(so2.String);
+		nuevo = new Stack_Object(s);
 		break;
 	default:
 		break;
 	}
 
-	return DATA_TYPE::Double; //En caso de que algo salga mal.
+	this->stack.push(*nuevo);
 }
+
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
+{
+}
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
+}
+
 
 #pragma endregion
 
