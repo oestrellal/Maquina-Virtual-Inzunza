@@ -4,7 +4,9 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <stack>
 #include "Stack_Object.h"
+
 using namespace std;
 
 class VMInzunza

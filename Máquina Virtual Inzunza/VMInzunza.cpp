@@ -60,7 +60,10 @@
 
 #pragma region Constantes
 
-#define MAX_STACK 500;		//Max quantity of objects that can be on the stack.
+#define MAX_STACK 500		//Max quantity of objects that can be on the stack.
+#define SIZEOFCHAR 1		//Size in bytes of a char.
+#define SIZEOFINT 4			//Size in bytes of an int.
+#define SIZEOFDOUBLE 8		//Size in bytes of a double.
 
 #pragma endregion
 
@@ -208,6 +211,7 @@ void VMInzunza::run()
 	int intContainer;
 	double doubleContainer;
 	string stringContainer;
+	Stack_Object *nuevo;		// Elemento que se va a agregar al stack;
 
 	//Loop
 	while (CS[IP] != '\0') {
@@ -257,12 +261,56 @@ void VMInzunza::run()
 
 #pragma region Push
 		case PUSHC:
+			IP++;
+			dir = getDir();
+			charContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(charContainer);
+			this->stack.push(*nuevo);
 			break;
 		case PUSHI:
+			IP++;
+			dir = getDir();
+			intContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(intContainer);
+			this->stack.push(*nuevo);
 			break;
 		case PUSHD:
+			IP++;
+			dir = getDir();
+			doubleContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(doubleContainer);
+			this->stack.push(*nuevo);
 			break;
 		case PUSHS:
+			IP++;
+			dir = getDir();
+			stringContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(stringContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAC:
+			IP++;
+			dir = getDir();
+			charContainer = DS[dir + getX() * SIZEOFCHAR];		//CHECAR
+			nuevo = new Stack_Object(charContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAI:
+			IP++;
+			dir = getDir();
+			intContainer = DS[dir + getX() * SIZEOFINT];		//CHECAR
+			nuevo = new Stack_Object(intContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAD:
+			IP++;
+			dir = getDir();
+			doubleContainer = DS[dir + getX() * SIZEOFDOUBLE];		//CHECAR
+			nuevo = new Stack_Object(doubleContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAS:
+			// PENDIENTE
 			break;
 #pragma endregion
 
@@ -331,7 +379,7 @@ void VMInzunza::run()
 				DS[dir + i] = stringContainer[i];
 			}
 			DS[dir + i] = '\0';
-			break;*/
+			break;
 
 #pragma endregion
 
@@ -464,6 +512,7 @@ double VMInzunza::getDouble(unsigned int dir) {
 	return u.value;
 
 }
+
 double VMInzunza::getDouble() {
 
 	union {
