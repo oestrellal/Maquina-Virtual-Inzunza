@@ -267,7 +267,64 @@ void VMInzunza::run()
 #pragma endregion
 
 #pragma region Pop
-
+		/*case POPC:
+			IP++;
+			dir = getDir();
+			charContainer=this->stack.pop().Char;
+			DS[ dir]=charContainer;
+			break;
+		case POPI:
+			IP++;
+			dir = getDir();
+			intContainer = (this->stack.pop())->Int;
+			setInt( intContainer, dir);
+			break;
+		case POPD:
+			IP++;
+			dir = getDir();
+			doubleContainer = (this->stack.pop())->Double;
+			setDouble(doubleContainer, dir);
+			break;
+		case POPS:
+			IP++;
+			dir = getDir();
+			stringContainer = (this->stack.pop())->String;
+			setString(stringContainer, dir);
+			break;
+		case POPAC:
+			IP++;
+			dir = getDir();
+			charContainer = this->stack.pop.Char;
+			DS[dir + getX()] = charContainer;
+			break;
+		case POPAI:
+			IP++;
+			dir = getDir();
+			intContainer = this->stack.pop.Int;
+			DS[dir + (getX()*4)] = intContainer;
+			break;
+		case POPAD:
+			IP++;
+			dir = getDir();
+			doubleContainer = (this->stack.pop()).Double;
+			DS[dir + getX()*8] = doubleContainer;
+			break;
+		case POPAS:
+			IP++;
+			dir = getDir();
+			stringContainer = (this->stack.pop()).String;
+			int i;
+			for (i = 0; i < stringContainer.length; i++)
+			{
+				DS[dir + i] = stringContainer[i];
+			}//for
+			DS[dir + i] = '\0';
+			break;
+		case POPX:
+			IP++;
+			intContainer = (this->stack.pop()).Int;
+			setX(intContainer);
+			break;*/
 #pragma endregion
 
 #pragma region Read
