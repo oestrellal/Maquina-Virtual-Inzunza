@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "VMInzunza.h"
+#include <string>
+
+using namespace std;
 
 #pragma region Instrucciones
 
@@ -75,7 +78,6 @@
 
 VMInzunza::VMInzunza()
 {
-	
 }
 
 
@@ -424,7 +426,25 @@ void VMInzunza::run()
 #pragma endregion
 
 #pragma region Operators
+		case INC:
 
+			break;
+		case RED:
+			break;
+		case ADD:
+			IP++;
+			operationADD();
+			break;
+		case SUB:
+			break;
+		case MUL:
+			break;
+		case DIV:
+			break;
+		case MOD:
+			break;
+		case CMP:
+			break;
 #pragma endregion
 
 #pragma region Jumps
@@ -478,6 +498,8 @@ void VMInzunza::run()
 	std::cout << "Halted!" << endl;
 }
 
+#pragma region Getters
+
 //gets a direction of memory based on the next 2 bytes in code segment and moves the IP
 unsigned int VMInzunza::getDir() {
 	union {
@@ -521,7 +543,7 @@ int VMInzunza::getInt() {
 }
 
 double VMInzunza::getDouble(unsigned int dir) {
-	
+
 	union {
 		double value;
 		char bytes[sizeof(double)];
@@ -546,52 +568,14 @@ double VMInzunza::getDouble() {
 	return u.value;
 
 }
-void VMInzunza::setInt(int toSave, unsigned int dir)
-{
-	union 
-	{
-			int value;
-			char bytes[sizeof(int)];
-	} u;
-
-	u.value = toSave;
-
-	for (int i = 0; i < 4; i++) {
-		DS[dir + i] = u.bytes[3-i];
-	}	
-}
-
-void VMInzunza::setDouble(double toSave,unsigned int dir)
-{
-	union 
-		{
-			double value;
-			char bytes[sizeof(int)];
-		} u;
-	u.value = toSave;
-	for (int i = 0; i < 8; i++) {
-		DS[dir + i] = u.bytes[7-i];
-	}
-}
-void VMInzunza::setString(string toSave,unsigned int dir)
-{
-	int i = 0;
-	for (i; i < toSave.length(); i++)
-	DS[dir + i] = toSave[i];
-	DS[dir + i] = '\0';
-}
-
 
 //Gets a string until it finds the null char
 string VMInzunza::getString(unsigned int dir) {
 	unsigned int next = dir;
 	string value = "";
-	char temp = DS[next];
-
 	while (DS[next] != '\0') {
 		value += DS[next];
 		next++;
-		temp = DS[next];
 	}
 	return value;
 }
@@ -607,23 +591,207 @@ string VMInzunza::getString() {
 	IP++;
 	return value;
 }
-//validates that the offset register is valid
-void VMInzunza::setX(unsigned int direccion)
-{
-	X = direccion;
-}
+
 // returns the offset register value
 unsigned int VMInzunza::getX()
 {
 	return X;
 }
-//validates that the offset register is valid
-void VMInzunza::setY(unsigned int direccion)
-{
-	Y = direccion;
-}
+
 // returns the offset register value
 unsigned int VMInzunza::getY()
 {
 	return Y;
 }
+
+#pragma endregion
+
+#pragma region Setters
+
+void VMInzunza::setInt(int toSave, unsigned int dir)
+{
+	union
+	{
+		int value;
+		char bytes[sizeof(int)];
+	} u;
+
+	u.value = toSave;
+
+	for (int i = 0; i < 4; i++) {
+		DS[dir + i] = u.bytes[3-i];
+	}	
+}
+
+void VMInzunza::setDouble(double toSave, unsigned int dir)
+{
+	union
+	{
+		double value;
+		char bytes[sizeof(int)];
+	} u;
+	u.value = toSave;
+	for (int i = 0; i < 8; i++) {
+		DS[dir + i] = u.bytes[7-i];
+	}
+}
+void VMInzunza::setString(string toSave, unsigned int dir)
+{
+	int i = 0;
+	for (i; i < toSave.length(); i++)
+	DS[dir + i] = toSave[i];
+	DS[dir + i] = '\0';
+}
+
+//validates that the offset register is valid
+void VMInzunza::setX(unsigned int direccion)
+{
+	X = direccion;
+}
+
+//validates that the offset register is valid
+void VMInzunza::setY(unsigned int direccion)
+{
+	Y = direccion;
+}
+
+#pragma endregion
+
+#pragma region Operators' helper functions
+
+// Method that corresponds to the operator INC.
+void VMInzunza::operationINC(unsigned int dir)
+{
+}
+
+// Method that corresponds to the operator RED.
+void VMInzunza::operationRED(unsigned int dir)
+{
+}
+
+// Method that corresponds to the smart operator ADD.
+void VMInzunza::operationADD()
+{
+	char c, int i, double d;
+	string s;
+	Stack_Object so1, so2, *nuevo;
+								// QUE PASA SI SE HACE UN POP Y EL STACK ESTA VACIO???
+	so1 = stack.top();
+	stack.pop();
+	so2 = stack.top();
+	stack.pop();
+
+	
+}
+
+//Gets a string until it finds the null char
+string VMInzunza::getString(unsigned int dir) {
+	unsigned int next = dir;
+	string value = "";
+	char temp = DS[next];
+
+	while (DS[next] != '\0') {
+		value += DS[next];
+		next++;
+		temp = DS[next];
+	}
+	return value;
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
+{
+}
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
+}
+
+// Determines the data type of the resulting operation to be efectuated in the stack.
+DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
+{
+	//TODO ESTE COCHINERO SE PUEDE HACER MAS EFICIENTE.
+	switch (so1.tipo)
+	{
+	case DATA_TYPE::Char:
+		switch (so2.tipo)
+		{
+		case DATA_TYPE::Char:
+			return DATA_TYPE::Char;
+			break;
+		case DATA_TYPE::Integer:
+			return DATA_TYPE::Integer;
+			break;
+		case DATA_TYPE::Double:
+			return DATA_TYPE::Double;
+			break;
+		case DATA_TYPE::String:
+			return DATA_TYPE::String;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DATA_TYPE::Integer:
+		switch (so2.tipo)
+		{
+		case DATA_TYPE::Char:
+		case DATA_TYPE::Integer:
+			return DATA_TYPE::Integer;
+			break;
+		case DATA_TYPE::Double:
+			return DATA_TYPE::Double;
+			break;
+		case DATA_TYPE::String:
+			return DATA_TYPE::String;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DATA_TYPE::Double:
+		switch (so2.tipo)
+		{
+		case DATA_TYPE::Char:
+		case DATA_TYPE::Integer:
+		case DATA_TYPE::Double:
+			return DATA_TYPE::Double;
+			break;
+		case DATA_TYPE::String:
+			return DATA_TYPE::String;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DATA_TYPE::String:
+		return DATA_TYPE::String;
+		break;
+	default:
+		break;
+	}
+
+	return DATA_TYPE::Double; //En caso de que algo salga mal.
+}
+
+#pragma endregion
+
+
+
+
+
