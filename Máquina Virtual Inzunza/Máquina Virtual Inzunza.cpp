@@ -6,16 +6,23 @@
 
 
 using namespace std;
-int main()
-{
-	VMInzunza vm;
+int main(int argc, char* argv[]) {
 
-	vm.load("C:/Users/e0438883/Desktop/prueba.cea");
-	vm.run();
+	if (argc > 1 && argc <= 2) {
+
+		VMInzunza vm;
+		string dir;
+		dir = argv[1];
+		vm.load(dir);
+		vm.run();
+
+	else {
+		cout << "Please provide source and destination params" << endl;
+	}
 
 	getchar();
 
 
-    return 0;
+	return 0;
 }
 

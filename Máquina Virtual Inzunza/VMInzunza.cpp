@@ -281,7 +281,7 @@ void VMInzunza::run()
 			break;
 
 #pragma endregion
-
+			/*
 #pragma region Push
 		case PUSHC:
 			IP++;
@@ -331,7 +331,7 @@ void VMInzunza::run()
 			doubleContainer = DS[dir + getX() * SIZEOFDOUBLE];		//CHECAR
 			nuevo = new Stack_Object(doubleContainer);
 			this->stack.push(*nuevo);
-			break;
+			break;*/
 		case PUSHAS:
 			// PENDIENTE
 			break;
@@ -393,6 +393,7 @@ void VMInzunza::run()
 			dir = getDir();
 			cin >> stringContainer;
 			dir = dir + getX()*getY();
+			int i;
 			for (i = 0; i < stringContainer.length(); i++) {
 				DS[dir + i] = stringContainer[i];
 			}
