@@ -1,60 +1,65 @@
 #include "stdafx.h"
 #include "VMInzunza.h"
+#include <string>
+
+using namespace std;
 
 #pragma region Instrucciones
 
-#define HALT 0		//Finish.
-#define WR 1		//Writes a newline.
-#define WRC 2		//Writes a char.
-#define WRI 3		//Writes an int.
-#define WRD 4		//Writes a double.
-#define WRS 5		//Writes a string.
-#define PUSHC 6		//Inserts a char on top of the stack.
-#define PUSHI 7		//Inserts an int on top of the stack.
-#define PUSHD 8		//Inserts a double on top of the stack.
-#define PUSHS 9		//Inserts a string on top of the stack.
-#define PUSHKC 10	//Inserts a constant char on top of the stack.
-#define PUSHKI 11	//Inserts a constant int on top of the stack.
-#define PUSHKD 12	//Inserts a constant double on top of the stack.
-#define PUSHKS 13	//Inserts a constant string on top of the stack.
-#define PUSHAC 14	//Inserts a char from an array on top of the stack.
-#define PUSHAI 15	//Inserts an int from an array on top of the stack.
-#define PUSHAD 16	//Inserts a double from an array on top of the stack.
-#define PUSHAS 17	//Inserts a string from an array on top of the stack.
-#define POPC 18		//Pops data from the stack as a char.
-#define POPI 19		//Pops data from the stack as an int.
-#define POPD 20		//Pops data from the stack as a double.
-#define POPS 21		//Pops data from the stack as a string.
-#define POPAC 22	//Pops data from the stack as a char using the offset register.
-#define POPAI 23	//Pops data from the stack as a int using the offset register.
-#define POPAD 24	//Pops data from the stack as a double using the offset register.
-#define POPAS 25	//Pops data from the stack as a string using the offset register.
-#define POPX 26		//Pops from stack to pointer register (int).
-#define RDC 27		//Reads a char into memory.
-#define RDI 28		//Reads an int into memory.
-#define RDD 29		//Reads a double into memory.
-#define RDS 30		//Reads a string into memory.
-#define RDAC 31		//Reads a char into an array using the offset register.
-#define RDAI 32		//Reads a int into an array using the offset register.
-#define RDAD 33		//Reads a double into an array using the offset register.
-#define RDAS 34		//Reads a string into an array using the offset register.
-#define JMP 35		//Jumps indonditionally to a memory address.
-#define JEQ 36		//Jumps if the top of the stack is (==) 0.
-#define JNE 37		//Jumps if the top of the stack is different than (!=) 0.
-#define JGT 38		//Jumps if the top of the stack is greater than (>) 0.
-#define JGE 39		//Jumps if the top of the stack is greater or equal than (>=) 0.
-#define JLT 40		//Jumps if the top of the stack is less than (<) 0.
-#define JLE 41		//Jumps if the top of the stack is less or equal than (<=) 0.
-#define STX 42		//Stores a variable in the pointer register.
-#define STKX 43		//Stores a constant int in the pointer register.
-#define INC 44		//Increases the value of a memory address by 1.
-#define DEC 45		//Decreases the value of a memory address by 1.
-#define ADD 46		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
-#define SUB 47		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
-#define MUL 48		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
-#define DIV 49		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
-#define MOD 50		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
-#define CMP 51		//Compares 2 stack values by subtracting them and stores the result in the stack.
+#define HALT 0x0		//Finish.
+#define WR 0x1			//Writes a newline.
+#define WRC 0x2			//Writes a char.
+#define WRI 0x3			//Writes an int.
+#define WRD 0x4			//Writes a double.
+#define WRS 0x5			//Writes a string.
+#define PUSHC 0x6		//Inserts a char on top of the stack.
+#define PUSHI 0x7		//Inserts an int on top of the stack.
+#define PUSHD 0x8		//Inserts a double on top of the stack.
+#define PUSHS 0x9		//Inserts a string on top of the stack.
+#define PUSHKC 0xA		//Inserts a constant char on top of the stack.
+#define PUSHKI 0xB		//Inserts a constant int on top of the stack.
+#define PUSHKD 0xC		//Inserts a constant double on top of the stack.
+#define PUSHKS 0xD		//Inserts a constant string on top of the stack.
+#define PUSHAC 0xE		//Inserts a char from an array on top of the stack.
+#define PUSHAI 0xF		//Inserts an int from an array on top of the stack.
+#define PUSHAD 0x10		//Inserts a double from an array on top of the stack.
+#define PUSHAS 0x11		//Inserts a string from an array on top of the stack.
+#define POPC 0x12		//Pops data from the stack as a char.
+#define POPI 0x13		//Pops data from the stack as an int.
+#define POPD 0x14		//Pops data from the stack as a double.
+#define POPS 0x15		//Pops data from the stack as a string.
+#define POPAC 0x16		//Pops data from the stack as a char using the offset register.
+#define POPAI 0x17		//Pops data from the stack as a int using the offset register.
+#define POPAD 0x18		//Pops data from the stack as a double using the offset register.
+#define POPAS 0x19		//Pops data from the stack as a string using the offset register.
+#define POPX 0x1A		//Pops from stack to pointer register (int).
+#define RDC 0x1B		//Reads a char into memory.
+#define RDI 0x1C		//Reads an int into memory.
+#define RDD 0x1D		//Reads a double into memory.
+#define RDS 0x1E		//Reads a string into memory.
+#define RDAC 0x1F		//Reads a char into an array using the offset register.
+#define RDAI 0x20		//Reads a int into an array using the offset register.
+#define RDAD 0x21		//Reads a double into an array using the offset register.
+#define RDAS 0x22		//Reads a string into an array using the offset register.
+#define JMP 0x23		//Jumps indonditionally to a memory address.
+#define JEQ 0x24		//Jumps if the top of the stack is (==) 0.
+#define JNE 0x25		//Jumps if the top of the stack is different than (!=) 0.
+#define JGT 0x26		//Jumps if the top of the stack is greater than (>) 0.
+#define JGE 0x27		//Jumps if the top of the stack is greater or equal than (>=) 0.
+#define JLT 0x28		//Jumps if the top of the stack is less than (<) 0.
+#define JLE 0x29		//Jumps if the top of the stack is less or equal than (<=) 0.
+#define STX 0x2A		//Stores a variable in the pointer register.
+#define STKX 0x2B		//Stores a constant int in the pointer register.
+#define STY 0x2C		//Stores a variable in the string array offset pointer.
+#define STKY 0x2D		//Stores a constant int in the string array offset pointer.
+#define INC 0x2E		//Increases the value of a memory address by 1.
+#define RED 0x2F		//Decreases the value of a memory address by 1.
+#define ADD 0x30		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
+#define SUB 0x31		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
+#define MUL 0x32		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
+#define DIV 0x33		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
+#define MOD 0x34		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
+#define CMP 0x35		//Compares 2 stack values by subtracting them and stores the result in the stack.
 
 #pragma endregion Mapa de Instrucciones a Byte
 
@@ -69,7 +74,6 @@
 
 VMInzunza::VMInzunza()
 {
-	
 }
 
 
@@ -408,7 +412,25 @@ void VMInzunza::run()
 #pragma endregion
 
 #pragma region Operators
+		case INC:
 
+			break;
+		case RED:
+			break;
+		case ADD:
+			IP++;
+			operationADD();
+			break;
+		case SUB:
+			break;
+		case MUL:
+			break;
+		case DIV:
+			break;
+		case MOD:
+			break;
+		case CMP:
+			break;
 #pragma endregion
 
 #pragma region Jumps
@@ -462,6 +484,8 @@ void VMInzunza::run()
 	std::cout << "Halted!" << endl;
 }
 
+#pragma region Getters
+
 //gets a direction of memory based on the next 2 bytes in code segment and moves the IP
 unsigned int VMInzunza::getDir() {
 	unsigned int byte1 = CS[IP];
@@ -501,7 +525,7 @@ int VMInzunza::getInt() {
 }
 
 double VMInzunza::getDouble(unsigned int dir) {
-	
+
 	union {
 		double value;
 		char bytes[sizeof(double)];
@@ -526,41 +550,6 @@ double VMInzunza::getDouble() {
 	return u.value;
 
 }
-void VMInzunza::setInt(int toSave, unsigned int dir)
-{
-	union 
-	{
-			int value;
-			char bytes[sizeof(int)];
-	} u;
-
-	u.value = toSave;
-
-	for (int i = 0; i < 4; i++) {
-		DS[dir + i] = u.bytes[i];
-	}	
-}
-
-void VMInzunza::setDouble(double toSave,unsigned int dir)
-{
-	union 
-		{
-			double value;
-			char bytes[sizeof(int)];
-		} u;
-	u.value = toSave;
-	for (int i = 0; i < 8; i++) {
-		DS[dir + i] = u.bytes[i];
-	}
-}
-void VMInzunza::setString(string toSave,unsigned int dir)
-{
-	int i = 0;
-	for (i; i < toSave.length(); i++);
-	DS[dir + i] = toSave[i];
-	DS[dir + i] = '\0';
-}
-
 
 //Gets a string until it finds the null char
 string VMInzunza::getString(unsigned int dir) {
@@ -584,23 +573,195 @@ string VMInzunza::getString() {
 	IP++;
 	return value;
 }
-//validates that the offset register is valid
-void VMInzunza::setX(unsigned int direccion)
-{
-	X = direccion;
-}
+
 // returns the offset register value
 unsigned int VMInzunza::getX()
 {
 	return X;
 }
-//validates that the offset register is valid
-void VMInzunza::setY(unsigned int direccion)
-{
-	Y = direccion;
-}
+
 // returns the offset register value
 unsigned int VMInzunza::getY()
 {
 	return Y;
 }
+
+#pragma endregion
+
+#pragma region Setters
+
+void VMInzunza::setInt(int toSave, unsigned int dir)
+{
+	union
+	{
+		int value;
+		char bytes[sizeof(int)];
+	} u;
+
+	u.value = toSave;
+
+	for (int i = 0; i < 4; i++) {
+		DS[dir + i] = u.bytes[i];
+	}
+}
+
+void VMInzunza::setDouble(double toSave, unsigned int dir)
+{
+	union
+	{
+		double value;
+		char bytes[sizeof(int)];
+	} u;
+	u.value = toSave;
+	for (int i = 0; i < 8; i++) {
+		DS[dir + i] = u.bytes[i];
+	}
+}
+void VMInzunza::setString(string toSave, unsigned int dir)
+{
+	int i = 0;
+	for (i; i < toSave.length(); i++);
+	DS[dir + i] = toSave[i];
+	DS[dir + i] = '\0';
+}
+
+//validates that the offset register is valid
+void VMInzunza::setX(unsigned int direccion)
+{
+	X = direccion;
+}
+
+//validates that the offset register is valid
+void VMInzunza::setY(unsigned int direccion)
+{
+	Y = direccion;
+}
+
+#pragma endregion
+
+#pragma region Operators' helper functions
+
+// Method that corresponds to the operator INC.
+void VMInzunza::operationINC(unsigned int dir)
+{
+}
+
+// Method that corresponds to the operator RED.
+void VMInzunza::operationRED(unsigned int dir)
+{
+}
+
+// Method that corresponds to the smart operator ADD.
+void VMInzunza::operationADD()
+{
+	char c, int i, double d;
+	string s;
+	Stack_Object so1, so2, *nuevo;
+								// QUE PASA SI SE HACE UN POP Y EL STACK ESTA VACIO???
+	so1 = stack.top();
+	stack.pop();
+	so2 = stack.top();
+	stack.pop();
+
+	
+}
+
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
+{
+}
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
+}
+
+// Determines the data type of the resulting operation to be efectuated in the stack.
+DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
+{
+	//TODO ESTE COCHINERO SE PUEDE HACER MAS EFICIENTE.
+	switch (so1.tipo)
+	{
+	case DATA_TYPE::Char:
+		switch (so2.tipo)
+		{
+		case DATA_TYPE::Char:
+			return DATA_TYPE::Char;
+			break;
+		case DATA_TYPE::Integer:
+			return DATA_TYPE::Integer;
+			break;
+		case DATA_TYPE::Double:
+			return DATA_TYPE::Double;
+			break;
+		case DATA_TYPE::String:
+			return DATA_TYPE::String;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DATA_TYPE::Integer:
+		switch (so2.tipo)
+		{
+		case DATA_TYPE::Char:
+		case DATA_TYPE::Integer:
+			return DATA_TYPE::Integer;
+			break;
+		case DATA_TYPE::Double:
+			return DATA_TYPE::Double;
+			break;
+		case DATA_TYPE::String:
+			return DATA_TYPE::String;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DATA_TYPE::Double:
+		switch (so2.tipo)
+		{
+		case DATA_TYPE::Char:
+		case DATA_TYPE::Integer:
+		case DATA_TYPE::Double:
+			return DATA_TYPE::Double;
+			break;
+		case DATA_TYPE::String:
+			return DATA_TYPE::String;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DATA_TYPE::String:
+		return DATA_TYPE::String;
+		break;
+	default:
+		break;
+	}
+
+	return DATA_TYPE::Double; //En caso de que algo salga mal.
+}
+
+#pragma endregion
+
+
+
+
+
