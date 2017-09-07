@@ -27,6 +27,9 @@
     <ClInclude Include="VMInzunza.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Stack_Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,5 +47,10 @@
     <ClCompile Include="Stack_Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Máquina Virtual Inzunza.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

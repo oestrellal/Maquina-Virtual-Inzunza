@@ -4,7 +4,9 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <stack>
 #include "Stack_Object.h"
+
 using namespace std;
 
 class VMInzunza
@@ -16,7 +18,7 @@ public:
 	void run();
 
 private:
-	stack<Stack_Object> stack;	//The operation stack.
+	//stack<Stack_Object> stack;	//The operation stack.
 
 	const string identifier= "UM-MEAN-C";
 
@@ -30,10 +32,21 @@ private:
 	double getDouble();// gets a double from next 8 lines of code
 
 	//Save values into memory
-	//This methods receive the value to save depending on the type od data, end the DS where they need to be saved
+	//These methods receive the value to save depending on the type od data, end the DS where they need to be saved
 	void setInt(int, unsigned int dir);
 	void setDouble(double, unsigned int dir);
 	void setString(string, unsigned int dir);
+
+	//Methods for operations.
+	//These methods exists to make the operators'code clearer.
+	void operationINC(unsigned int dir);
+	void operationRED(unsigned int dir);
+	void operationADD();
+	void operationSUB();
+	void operationMUL();
+	void operationDIV();
+	void operationMOD();
+	void operationCMP();
 
 	void setX(unsigned int);
 	unsigned int getX();

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "VMInzunza.h"
+#include <string>
+
+using namespace std;
 
 #pragma region Instrucciones
 
@@ -9,64 +12,72 @@
 #define WRI 3		//Writes an int.
 #define WRD 4		//Writes a double.
 #define WRS 5		//Writes a string.
-#define PUSHC 6		//Inserts a char on top of the stack.
-#define PUSHI 7		//Inserts an int on top of the stack.
-#define PUSHD 8		//Inserts a double on top of the stack.
-#define PUSHS 9		//Inserts a string on top of the stack.
-#define PUSHKC 10	//Inserts a constant char on top of the stack.
-#define PUSHKI 11	//Inserts a constant int on top of the stack.
-#define PUSHKD 12	//Inserts a constant double on top of the stack.
-#define PUSHKS 13	//Inserts a constant string on top of the stack.
-#define PUSHAC 14	//Inserts a char from an array on top of the stack.
-#define PUSHAI 15	//Inserts an int from an array on top of the stack.
-#define PUSHAD 16	//Inserts a double from an array on top of the stack.
-#define PUSHAS 17	//Inserts a string from an array on top of the stack.
-#define POPC 18		//Pops data from the stack as a char.
-#define POPI 19		//Pops data from the stack as an int.
-#define POPD 20		//Pops data from the stack as a double.
-#define POPS 21		//Pops data from the stack as a string.
-#define POPAC 22	//Pops data from the stack as a char using the offset register.
-#define POPAI 23	//Pops data from the stack as a int using the offset register.
-#define POPAD 24	//Pops data from the stack as a double using the offset register.
-#define POPAS 25	//Pops data from the stack as a string using the offset register.
-#define POPX 26		//Pops from stack to pointer register (int).
-#define RDC 27		//Reads a char into memory.
-#define RDI 28		//Reads an int into memory.
-#define RDD 29		//Reads a double into memory.
-#define RDS 30		//Reads a string into memory.
-#define RDAC 31		//Reads a char into an array using the offset register.
-#define RDAI 32		//Reads a int into an array using the offset register.
-#define RDAD 33		//Reads a double into an array using the offset register.
-#define RDAS 34		//Reads a string into an array using the offset register.
-#define JMP 35		//Jumps indonditionally to a memory address.
-#define JEQ 36		//Jumps if the top of the stack is (==) 0.
-#define JNE 37		//Jumps if the top of the stack is different than (!=) 0.
-#define JGT 38		//Jumps if the top of the stack is greater than (>) 0.
-#define JGE 39		//Jumps if the top of the stack is greater or equal than (>=) 0.
-#define JLT 40		//Jumps if the top of the stack is less than (<) 0.
-#define JLE 41		//Jumps if the top of the stack is less or equal than (<=) 0.
-#define STX 42		//Stores a variable in the pointer register.
-#define STKX 43		//Stores a constant int in the pointer register.
-#define INC 44		//Increases the value of a memory address by 1.
-#define DEC 45		//Decreases the value of a memory address by 1.
-#define ADD 46		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
-#define SUB 47		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
-#define MUL 48		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
-#define DIV 49		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
-#define MOD 50		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
-#define CMP 51		//Compares 2 stack values by subtracting them and stores the result in the stack.
+#define WRAC 6		//
+#define WRAI 7		//
+#define WRAD 8		//
+#define WRAS 9		//
+#define PUSHC 10	//Inserts a char on top of the stack.
+#define PUSHI 11	//Inserts an int on top of the stack.
+#define PUSHD 12	//Inserts a double on top of the stack.
+#define PUSHS 13	//Inserts a string on top of the stack.
+#define PUSHKC 14	//Inserts a constant char on top of the stack.
+#define PUSHKI 15	//Inserts a constant int on top of the stack.
+#define PUSHKD 16	//Inserts a constant double on top of the stack.
+#define PUSHKS 17	//Inserts a constant string on top of the stack.
+#define PUSHAC 18	//Inserts a char from an array on top of the stack.
+#define PUSHAI 19	//Inserts an int from an array on top of the stack.
+#define PUSHAD 20	//Inserts a double from an array on top of the stack.
+#define PUSHAS 21	//Inserts a string from an array on top of the stack.
+#define POPC 22		//Pops data from the stack as a char.
+#define POPI 23		//Pops data from the stack as an int.
+#define POPD 24		//Pops data from the stack as a double.
+#define POPS 25		//Pops data from the stack as a string.
+#define POPAC 26	//Pops data from the stack as a char using the offset register.
+#define POPAI 27	//Pops data from the stack as a int using the offset register.
+#define POPAD 28	//Pops data from the stack as a double using the offset register.
+#define POPAS 29	//Pops data from the stack as a string using the offset register.
+#define POPX 30		//Pops from stack to pointer register (int).
+#define RDC 31		//Reads a char into memory.
+#define RDI 32		//Reads an int into memory.
+#define RDD 33		//Reads a double into memory.
+#define RDS 34		//Reads a string into memory.
+#define RDAC 35		//Reads a char into an array using the offset register.
+#define RDAI 36		//Reads a int into an array using the offset register.
+#define RDAD 37		//Reads a double into an array using the offset register.
+#define RDAS 38		//Reads a string into an array using the offset register.
+#define JMP 39		//Jumps indonditionally to a memory address.
+#define JEQ 40		//Jumps if the top of the stack is (==) 0.
+#define JNE 41		//Jumps if the top of the stack is different than (!=) 0.
+#define JGT 42		//Jumps if the top of the stack is greater than (>) 0.
+#define JGE 43		//Jumps if the top of the stack is greater or equal than (>=) 0.
+#define JLT 44		//Jumps if the top of the stack is less than (<) 0.
+#define JLE 45		//Jumps if the top of the stack is less or equal than (<=) 0.
+#define STX 46		//Stores a variable in the pointer register.
+#define STKX 47		//Stores a constant int in the pointer register.
+#define STY 48		//
+#define	STKY 49
+#define INC 50		//Increases the value of a memory address by 1.
+#define RED 51		//Decreases the value of a memory address by 1.
+#define ADD 52		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
+#define SUB 53		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
+#define MUL 54		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
+#define DIV 55		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
+#define MOD 56		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
+#define CMP 57		//Compares 2 stack values by subtracting them and stores the result in the stack.
 
 #pragma endregion Mapa de Instrucciones a Byte
 
 #pragma region Constantes
 
-#define MAX_STACK 500;		//Max quantity of objects that can be on the stack.
+#define MAX_STACK 500		//Max quantity of objects that can be on the stack.
+#define SIZEOFCHAR 1		//Size in bytes of a char.
+#define SIZEOFINT 4			//Size in bytes of an int.
+#define SIZEOFDOUBLE 8		//Size in bytes of a double.
 
 #pragma endregion
 
 VMInzunza::VMInzunza()
 {
-	
 }
 
 
@@ -75,7 +86,7 @@ VMInzunza::~VMInzunza()
 }
 
 
-//Encargado de leer archivo, verificar identificador, cardar porción de código y datos, e iniciar IP en 0
+//Encargado de leer archivo, verificar identificador, cardar porciÃ³n de cÃ³digo y datos, e iniciar IP en 0
 bool VMInzunza::load(string dir)
 {
 	ifstream infile;
@@ -120,33 +131,35 @@ bool VMInzunza::load(string dir)
 			//error: longitud del archivo menor al identificador
 		}
 	}
-
-	unsigned int byte1;
-	unsigned int byte2;
+	union {
+		unsigned int value;
+		char byte[4];
+	} sizeCode;
+	union {
+		unsigned int value;
+		char byte[4];
+	} sizeData;
 	//asignar memoria para codigo
-	unsigned int sizeCode;
-
-	byte1 = oData[i];
-	byte2 = oData[i + 1];
-	sizeCode = byte1 << 8;
-	sizeCode += byte2;
+	sizeCode.byte[0] = oData[i+1];
+	sizeCode.byte[1]= oData[i ];
+	sizeCode.byte[2] = 0;
+	sizeCode.byte[3] = 0;
 
 	i += 2;
 	//asignar memoria para datos
-	unsigned int sizeData;
-	byte1 = oData[i];
-	byte2 = oData[i + 1];
-	sizeData = byte1 << 8;
-	sizeData += byte2;
+	sizeData.byte[0] = oData[i+1];
+	sizeData.byte[1] = oData[i ];
+	sizeData.byte[2] = 0;
+	sizeData.byte[3] = 0;
 	i += 2;
 
-	//error: check why ó is 242 instead of 168
-	CS = new unsigned char[sizeCode];
-	DS = new unsigned char[sizeData];
+	//error: check why Ã³ is 242 instead of 168
+	CS = new unsigned char[sizeCode.value];
+	DS = new unsigned char[sizeData.value];
 
 	//copy the code
 	int start = i;
-	for (i; (i < start + sizeCode && i < oData.size()); i++) {
+	for (i; (i < start + sizeCode.value && i < oData.size()); i++) {
 		CS[i - start] = oData[i];
 	}
 
@@ -158,7 +171,7 @@ bool VMInzunza::load(string dir)
 void VMInzunza::run()
 {
 	//hERE WE CAN INPUT TEST CODES
-
+	/*
 	//Code Segment
 	CS[0] = WR;
 	CS[1] = WRC;
@@ -181,9 +194,22 @@ void VMInzunza::run()
 	CS[18] = '\1';
 	CS[19] = RDS;
 	CS[20] = '\0';
-	CS[21] = '\2';
-	CS[22] = HALT;
-
+	CS[21] = '\5';
+	CS[22] = WR;
+	CS[23] = WRC;
+	CS[24] = '\0';
+	CS[25] = '\0';
+	CS[26] = WR;
+	CS[27] = WRI;
+	CS[28] = '\0';
+	CS[29] = '\1';
+	CS[30] = WR;
+	CS[31] = WRS;
+	CS[32] = '\0';
+	CS[33] = '\5';
+	CS[34] = WR;
+	CS[35] = HALT;
+	*/
 	//Data Segment
 	DS[0] = 'U';
 	DS[1] = 'n';
@@ -201,13 +227,14 @@ void VMInzunza::run()
 	DS[13] = 'n';
 	DS[14] = 'd';
 	DS[15] = '\0';
-
+	
 
 	unsigned int dir;
 	unsigned char charContainer;
 	int intContainer;
 	double doubleContainer;
 	string stringContainer;
+	Stack_Object *nuevo;		// Elemento que se va a agregar al stack;
 
 	//Loop
 	while (CS[IP] != '\0') {
@@ -254,15 +281,59 @@ void VMInzunza::run()
 			break;
 
 #pragma endregion
-
+			/*
 #pragma region Push
 		case PUSHC:
+			IP++;
+			dir = getDir();
+			charContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(charContainer);
+			this->stack.push(*nuevo);
 			break;
 		case PUSHI:
+			IP++;
+			dir = getDir();
+			intContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(intContainer);
+			this->stack.push(*nuevo);
 			break;
 		case PUSHD:
+			IP++;
+			dir = getDir();
+			doubleContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(doubleContainer);
+			this->stack.push(*nuevo);
 			break;
 		case PUSHS:
+			IP++;
+			dir = getDir();
+			stringContainer = DS[dir];		//CHECAR
+			nuevo = new Stack_Object(stringContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAC:
+			IP++;
+			dir = getDir();
+			charContainer = DS[dir + getX() * SIZEOFCHAR];		//CHECAR
+			nuevo = new Stack_Object(charContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAI:
+			IP++;
+			dir = getDir();
+			intContainer = DS[dir + getX() * SIZEOFINT];		//CHECAR
+			nuevo = new Stack_Object(intContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHAD:
+			IP++;
+			dir = getDir();
+			doubleContainer = DS[dir + getX() * SIZEOFDOUBLE];		//CHECAR
+			nuevo = new Stack_Object(doubleContainer);
+			this->stack.push(*nuevo);
+			break;*/
+		case PUSHAS:
+			// PENDIENTE
 			break;
 #pragma endregion
 
@@ -339,23 +410,19 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			cin >> intContainer;
-			setInt(dir);
+			setInt(intContainer,dir);
 			break;
 		case RDD:
 			IP++;
 			dir = getDir();
 			cin >> doubleContainer;
-			setDouble(dir);
+			setDouble(doubleContainer,dir);
 			break;
 		case RDS:
 			IP++;
 			dir = getDir();
-			cin >> stringContainer;
-			int i;
-			for (i = 0; i < stringContainer.length(); i++) {
-				DS[dir + i] = stringContainer[i];
-			}
-			DS[dir + i] = '\0';
+			cin >> stringContainer;//error: change to read full line
+			setString(stringContainer, dir);
 			break;
 			
 		case RDAC:
@@ -382,13 +449,13 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			cin >> stringContainer;
+			dir = dir + getX()*getY();
 			int i;
-			dir = dir + getX()*maxStringSize;
 			for (i = 0; i < stringContainer.length(); i++) {
 				DS[dir + i] = stringContainer[i];
 			}
 			DS[dir + i] = '\0';
-			break;*/
+			break;
 
 #pragma endregion
 
@@ -417,7 +484,25 @@ void VMInzunza::run()
 #pragma endregion
 
 #pragma region Operators
+		case INC:
 
+			break;
+		case RED:
+			break;
+		case ADD:
+			IP++;
+			operationADD();
+			break;
+		case SUB:
+			break;
+		case MUL:
+			break;
+		case DIV:
+			break;
+		case MOD:
+			break;
+		case CMP:
+			break;
 #pragma endregion
 
 #pragma region Jumps
@@ -471,14 +556,20 @@ void VMInzunza::run()
 	std::cout << "Halted!" << endl;
 }
 
+#pragma region Getters
+
 //gets a direction of memory based on the next 2 bytes in code segment and moves the IP
 unsigned int VMInzunza::getDir() {
-	unsigned int byte1 = CS[IP];
-	unsigned int byte2 = CS[IP + 1];
+	union {
+		unsigned int value;
+		unsigned char byte[4];
+	} u;
+	u.byte[0] = CS[IP+1];
+	u.byte[1]= CS[IP];
+	u.byte[2] = '\0';
+	u.byte[3] = 0;
 	IP += 2;
-	unsigned int dir = byte1 << 8;
-	dir += byte2;
-	return dir;
+	return u.value;
 }
 
 int VMInzunza::getInt(unsigned int dir) {
@@ -488,7 +579,7 @@ int VMInzunza::getInt(unsigned int dir) {
 		char bytes[sizeof(int)];
 	} u;
 	for (int i = 0; i < 4; i++) {
-		u.bytes[i] = DS[dir + i];
+		u.bytes[i] = DS[dir + 3-i];
 	}
 	return u.value;
 
@@ -500,7 +591,7 @@ int VMInzunza::getInt() {
 		char bytes[sizeof(int)];
 	} u;
 	for (int i = 0; i < 4; i++) {
-		u.bytes[i] = CS[IP + i];
+		u.bytes[i] = CS[IP + 3-i];
 	}
 	IP += 4;
 
@@ -510,17 +601,18 @@ int VMInzunza::getInt() {
 }
 
 double VMInzunza::getDouble(unsigned int dir) {
-	
+
 	union {
 		double value;
 		char bytes[sizeof(double)];
 	} u;
 	for (int i = 0; i < 8; i++) {
-		u.bytes[i] = DS[dir + i];
+		u.bytes[i] = DS[dir + 7-i];
 	}
 	return u.value;
 
 }
+
 double VMInzunza::getDouble() {
 
 	union {
@@ -528,47 +620,12 @@ double VMInzunza::getDouble() {
 		char bytes[sizeof(double)];
 	} u;
 	for (int i = 0; i < 8; i++) {
-		u.bytes[i] = CS[IP + i];
+		u.bytes[i] = CS[IP +7- i];
 	}
 	IP += 8;
 	return u.value;
 
 }
-void VMInzunza::setInt(int toSave, unsigned int dir)
-{
-	union 
-	{
-			int value;
-			char bytes[sizeof(int)];
-	} u;
-
-	u.value = toSave;
-
-	for (int i = 0; i < 4; i++) {
-		DS[dir + i] = u.bytes[i];
-	}	
-}
-
-void VMInzunza::setDouble(double toSave,unsigned int dir)
-{
-	union 
-		{
-			double value;
-			char bytes[sizeof(int)];
-		} u;
-	u.value = toSave;
-	for (int i = 0; i < 8; i++) {
-		DS[dir + i] = u.bytes[i];
-	}
-}
-void VMInzunza::setString(string toSave,unsigned int dir)
-{
-	int i = 0;
-	for (i; i < toSave.length(); i++);
-	DS[dir + i] = toSave[i];
-	DS[dir + i] = '\0';
-}
-
 
 //Gets a string until it finds the null char
 string VMInzunza::getString(unsigned int dir) {
@@ -592,23 +649,260 @@ string VMInzunza::getString() {
 	IP++;
 	return value;
 }
-//validates that the offset register is valid
-void VMInzunza::setX(unsigned int direccion)
-{
-	X = direccion;
-}
+
 // returns the offset register value
 unsigned int VMInzunza::getX()
 {
 	return X;
 }
-//validates that the offset register is valid
-void VMInzunza::setY(unsigned int direccion)
-{
-	Y = direccion;
-}
+
 // returns the offset register value
 unsigned int VMInzunza::getY()
 {
 	return Y;
 }
+
+#pragma endregion
+
+#pragma region Setters
+
+void VMInzunza::setInt(int toSave, unsigned int dir)
+{
+	union
+	{
+		int value;
+		char bytes[sizeof(int)];
+	} u;
+
+	u.value = toSave;
+
+	for (int i = 0; i < 4; i++) {
+		DS[dir + i] = u.bytes[3-i];
+	}	
+}
+
+void VMInzunza::setDouble(double toSave, unsigned int dir)
+{
+	union
+	{
+		double value;
+		char bytes[sizeof(int)];
+	} u;
+	u.value = toSave;
+	for (int i = 0; i < 8; i++) {
+		DS[dir + i] = u.bytes[7-i];
+	}
+}
+void VMInzunza::setString(string toSave, unsigned int dir)
+{
+	int i = 0;
+	for (i; i < toSave.length(); i++)
+	DS[dir + i] = toSave[i];
+	DS[dir + i] = '\0';
+}
+
+//validates that the offset register is valid
+void VMInzunza::setX(unsigned int direccion)
+{
+	X = direccion;
+}
+
+//validates that the offset register is valid
+void VMInzunza::setY(unsigned int direccion)
+{
+	Y = direccion;
+}
+
+#pragma endregion
+
+#pragma region Operators' helper functions
+
+// Method that corresponds to the operator INC.
+void VMInzunza::operationINC(unsigned int dir)
+{
+}
+
+// Method that corresponds to the operator RED.
+void VMInzunza::operationRED(unsigned int dir)
+{
+}
+
+// Method that corresponds to the smart operator ADD.
+void VMInzunza::operationADD()
+{
+	char c, int i, double d;
+	string s;
+	DATA_TYPE tipo;
+	Stack_Object so1, so2, *nuevo;
+
+	so1 = stack.top();
+	stack.pop();
+	so2 = stack.top();
+	stack.pop();
+
+
+}
+
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
+{
+}
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
+}
+
+// Determines the data type of the resulting operation to be efectuated in the stack.
+DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
+{
+	//TODO ESTE COCHINERO SE PUEDE HACER MAS EFICIENTE.
+	switch (so1.tipo)
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char + so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int)so1.Char + so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Char + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Char;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
+			break;
+		default:
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int + (int)so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int + so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Int + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Int;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
+			break;
+		default:
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = so1.Double + (double)so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = so1.Double + (double)so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Double;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
+			break;
+		default:
+			break;
+		}
+		break;
+	case String:
+		switch (so2.tipo)
+		{
+		case Char:
+			s = so1.Char;
+			break;
+		case Integer:
+			s = so1.Int;
+			break;
+		case Double:
+			s = so1.Double;
+			break;
+		default:
+			s = so1.String;
+			break;
+		}
+		s.append(so2.String);
+		nuevo = new Stack_Object(s);
+		break;
+	default:
+		break;
+	}
+
+	this->stack.push(*nuevo);
+}
+
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
+{
+}
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
+}
+
+
+#pragma endregion
+
+
+
+
+
