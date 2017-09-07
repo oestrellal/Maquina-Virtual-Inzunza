@@ -47,7 +47,6 @@ private:
 	void operationDIV();
 	void operationMOD();
 	void operationCMP();
-	DATA_TYPE getOperationDataType(Stack_Object so1, Stack_Object so2);
 
 	void setX(unsigned int);
 	unsigned int getX();
