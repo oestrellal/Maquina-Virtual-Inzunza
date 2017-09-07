@@ -14,6 +14,7 @@ public:
 	~Stack_Object();
 
 	DATA_TYPE tipo;	//Data type corresponding to this element.
+	
 	union			//Data stores in this element.
 	{
 		char Char;			//Data stored as char.
