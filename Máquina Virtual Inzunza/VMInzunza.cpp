@@ -740,40 +740,7 @@ void VMInzunza::operationADD()
 	so2 = stack.top();
 	stack.pop();
 
-
-}
-
-// Method that corresponds to the smart operator SUB.
-void VMInzunza::operationSUB()
-{
-}
-
-// Method that corresponds to the smart operator MUL.
-void VMInzunza::operationMUL()
-{
-}
-
-// Method that corresponds to the smart operator DIV.
-void VMInzunza::operationDIV()
-{
-}
-
-// Method that corresponds to the smart operator MOD.
-void VMInzunza::operationMOD()
-{
-}
-
-
-// Method that corresponds to the operator CMP.
-void VMInzunza::operationCMP()
-{
-}
-
-// Determines the data type of the resulting operation to be efectuated in the stack.
-DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
-{
-	//TODO ESTE COCHINERO SE PUEDE HACER MAS EFICIENTE.
-	switch (so1.tipo)
+	switch (so1.Char)
 	{
 	case Char:
 		switch (so2.tipo)
@@ -831,7 +798,7 @@ DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
 			nuevo = new Stack_Object(d);
 			break;
 		case Integer:
-			d = so1.Double + (double)so2.Int;
+			d = so1.Double + so2.Int;
 			nuevo = new Stack_Object(d);
 			break;
 		case Double:
@@ -871,6 +838,32 @@ DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
 	}
 
 	this->stack.push(*nuevo);
+}
+
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
+{
+}
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
 }
 
 // Method that corresponds to the smart operator SUB.
