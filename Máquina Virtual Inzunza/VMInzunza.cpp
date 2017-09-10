@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "VMInzunza.h"
-#include <string>
 
 using namespace std;
 
@@ -84,7 +83,42 @@ VMInzunza::VMInzunza()
 VMInzunza::~VMInzunza()
 {
 }
+BOOL CtrlHandler(DWORD fdwCtrlType)
+{
+	switch (fdwCtrlType)
+	{
+		// Handle the CTRL-C signal. 
+	case CTRL_C_EVENT:
+		printf("Ctrl-C event\n\n");
+		Beep(750, 300);
+		return(TRUE);
 
+		// CTRL-CLOSE: confirm that the user wants to exit. 
+	case CTRL_CLOSE_EVENT:
+		Beep(600, 200);
+		printf("Ctrl-Close event\n\n");
+		return(TRUE);
+
+		// Pass other signals to the next handler. 
+	case CTRL_BREAK_EVENT:
+		Beep(900, 200);
+		printf("Ctrl-Break event\n\n");
+		return FALSE;
+
+	case CTRL_LOGOFF_EVENT:
+		Beep(1000, 200);
+		printf("Ctrl-Logoff event\n\n");
+		return FALSE;
+
+	case CTRL_SHUTDOWN_EVENT:
+		Beep(750, 500);
+		printf("Ctrl-Shutdown event\n\n");
+		return FALSE;
+
+	default:
+		return FALSE;
+	}
+}
 
 //Encargado de leer archivo, verificar identificador, cardar porción de código y datos, e iniciar IP en 0
 bool VMInzunza::load(string dir)
@@ -238,6 +272,11 @@ void VMInzunza::run()
 	Stack_Object *nuevo;		// Elemento que se va a agregar al stack;
 
 	//Loop
+	if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE)) {
+		cout << "Error: couldnt load ctrl handler" << endl;
+		return;
+	}
+
 	while (CS[IP] != '\0') {
 		switch (CS[IP])
 		{

@@ -5,6 +5,9 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <Windows.h>
+#include <stdio.h>
+#include <string>
 #include "Stack_Object.h"
 
 using namespace std;
