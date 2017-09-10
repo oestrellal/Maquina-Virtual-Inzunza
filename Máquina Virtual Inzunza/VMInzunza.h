@@ -33,7 +33,7 @@ private:
 
 	//Save values into memory
 	//These methods receive the value to save depending on the type od data, end the DS where they need to be saved
-	void setInt(int, unsigned int dir);
+	void setInteger(int, unsigned int dir);
 	void setDouble(double, unsigned int dir);
 	void setString(string, unsigned int dir);
 

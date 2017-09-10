@@ -233,6 +233,7 @@ void VMInzunza::run()
 	unsigned char charContainer;
 	int intContainer;
 	double doubleContainer;
+	bool correctEnd = false;
 	string stringContainer;
 	Stack_Object *nuevo;		// Elemento que se va a agregar al stack;
 
@@ -262,14 +263,15 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			intContainer = getInt(dir);
-			std::cout << intContainer;
+			std::cout << to_string(intContainer);
 			intContainer = 0;
 			break;
 		case WRD:
 			IP++;
 			dir = getDir();
 			doubleContainer = getDouble(dir);
-			std::cout << doubleContainer;
+			
+			std::cout << to_string(doubleContainer);
 			doubleContainer = 0;
 			break;
 		case WRS:
@@ -364,13 +366,35 @@ void VMInzunza::run()
 		case RDI:
 			IP++;
 			dir = getDir();
-			cin >> intContainer;
-			setInt(intContainer,dir);
+			while (!correctEnd) {
+				try {
+					getline(cin, stringContainer);
+					intContainer = stoi(stringContainer);
+					correctEnd = true;
+				}
+				catch (std::exception const & e) {
+					//cout << "error: " << e.what() << endl;
+					cout << "error: Not an integer.Try again" << endl;
+				}
+			}
+			correctEnd = false;
+			setInteger(intContainer,dir);
 			break;
 		case RDD:
 			IP++;
 			dir = getDir();
-			cin >> doubleContainer;
+			while (!correctEnd) {
+				try {
+					getline(cin, stringContainer);
+					doubleContainer = stod(stringContainer);
+					correctEnd = true;
+				}
+				catch (std::exception const & e) {
+					//cout << "error: " << e.what() << endl;
+					cout << "error: Not a double.Try again" << endl;
+				}
+			}
+			correctEnd = false;
 			setDouble(doubleContainer,dir);
 			break;
 		case RDS:
@@ -391,13 +415,35 @@ void VMInzunza::run()
 			dir = getDir();
 			cin >> intContainer;
 			dir=dir+getX()*4;
-			setInt(intContainer,dir);
+			while (!correctEnd) {
+				try {
+					getline(cin, stringContainer);
+					intContainer = stoi(stringContainer);
+					correctEnd = true;
+				}
+				catch (std::exception const & e) {
+					//cout << "error: " << e.what() << endl;
+					cout << "error: Not an integer.Try again" << endl;
+				}
+			}
+			correctEnd = false;
+			setInteger(intContainer,dir);
 			break;
 		case RDAD:
 			IP++;
 			dir = getDir();
-			cin >> doubleContainer;
-			dir = dir + getX()*8;
+			while (!correctEnd) {
+				try {
+					getline(cin, stringContainer);
+					doubleContainer = stod(stringContainer);
+					correctEnd = true;
+				}
+				catch (std::exception const & e) {
+					//cout << "error: " << e.what() << endl;
+					cout << "error: Not a double.Try again" << endl;
+				}
+			}
+			correctEnd = false;			dir = dir + getX()*8;
 			setDouble(doubleContainer,dir);
 			break;
 		case RDAS:
@@ -621,7 +667,7 @@ unsigned int VMInzunza::getY()
 
 #pragma region Setters
 
-void VMInzunza::setInt(int toSave, unsigned int dir)
+void VMInzunza::setInteger(int toSave, unsigned int dir)
 {
 	union
 	{
