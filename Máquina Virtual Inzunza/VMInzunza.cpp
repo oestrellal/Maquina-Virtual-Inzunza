@@ -16,55 +16,55 @@ using namespace std;
 #define WRAI 7		//
 #define WRAD 8		//
 #define WRAS 9		//
-#define PUSHC 10	//Inserts a char on top of the stack.
-#define PUSHI 11	//Inserts an int on top of the stack.
-#define PUSHD 12	//Inserts a double on top of the stack.
-#define PUSHS 13	//Inserts a string on top of the stack.
-#define PUSHKC 14	//Inserts a constant char on top of the stack.
-#define PUSHKI 15	//Inserts a constant int on top of the stack.
-#define PUSHKD 16	//Inserts a constant double on top of the stack.
-#define PUSHKS 17	//Inserts a constant string on top of the stack.
-#define PUSHAC 18	//Inserts a char from an array on top of the stack.
-#define PUSHAI 19	//Inserts an int from an array on top of the stack.
-#define PUSHAD 20	//Inserts a double from an array on top of the stack.
-#define PUSHAS 21	//Inserts a string from an array on top of the stack.
-#define POPC 22		//Pops data from the stack as a char.
-#define POPI 23		//Pops data from the stack as an int.
-#define POPD 24		//Pops data from the stack as a double.
-#define POPS 25		//Pops data from the stack as a string.
-#define POPAC 26	//Pops data from the stack as a char using the offset register.
-#define POPAI 27	//Pops data from the stack as a int using the offset register.
-#define POPAD 28	//Pops data from the stack as a double using the offset register.
-#define POPAS 29	//Pops data from the stack as a string using the offset register.
-#define POPX 30		//Pops from stack to pointer register (int).
-#define RDC 31		//Reads a char into memory.
-#define RDI 32		//Reads an int into memory.
-#define RDD 33		//Reads a double into memory.
-#define RDS 34		//Reads a string into memory.
-#define RDAC 35		//Reads a char into an array using the offset register.
-#define RDAI 36		//Reads a int into an array using the offset register.
-#define RDAD 37		//Reads a double into an array using the offset register.
-#define RDAS 38		//Reads a string into an array using the offset register.
-#define JMP 39		//Jumps indonditionally to a memory address.
-#define JEQ 40		//Jumps if the top of the stack is (==) 0.
-#define JNE 41		//Jumps if the top of the stack is different than (!=) 0.
-#define JGT 42		//Jumps if the top of the stack is greater than (>) 0.
-#define JGE 43		//Jumps if the top of the stack is greater or equal than (>=) 0.
-#define JLT 44		//Jumps if the top of the stack is less than (<) 0.
-#define JLE 45		//Jumps if the top of the stack is less or equal than (<=) 0.
-#define STX 46		//Stores a variable in the pointer register.
-#define STKX 47		//Stores a constant int in the pointer register.
-#define STY 48		//
-#define	STKY 49
-#define INC 50		//Increases the value of a memory address by 1.
-#define RED 51		//Decreases the value of a memory address by 1.
-#define ADD 52		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
-#define SUB 53		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
-#define MUL 54		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
-#define DIV 55		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
-#define MOD 56		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
-#define CMP 57		//Compares 2 stack values by subtracting them and stores the result in the stack.
-
+#define WRKS 10
+#define PUSHC 11	//Inserts a char on top of the stack.
+#define PUSHI 12	//Inserts an int on top of the stack.
+#define PUSHD 13	//Inserts a double on top of the stack.
+#define PUSHS 14	//Inserts a string on top of the stack.
+#define PUSHKC 15	//Inserts a constant char on top of the stack.
+#define PUSHKI 16	//Inserts a constant int on top of the stack.
+#define PUSHKD 17	//Inserts a constant double on top of the stack.
+#define PUSHKS 18	//Inserts a constant string on top of the stack.
+#define PUSHAC 19	//Inserts a char from an array on top of the stack.
+#define PUSHAI 20	//Inserts an int from an array on top of the stack.
+#define PUSHAD 21	//Inserts a double from an array on top of the stack.
+#define PUSHAS 22	//Inserts a string from an array on top of the stack.
+#define POPC 23		//Pops data from the stack as a char.
+#define POPI 24		//Pops data from the stack as an int.
+#define POPD 25		//Pops data from the stack as a double.
+#define POPS 26		//Pops data from the stack as a string.
+#define POPAC 27	//Pops data from the stack as a char using the offset register.
+#define POPAI 28	//Pops data from the stack as a int using the offset register.
+#define POPAD 29	//Pops data from the stack as a double using the offset register.
+#define POPAS 30	//Pops data from the stack as a string using the offset register.
+#define POPX 31		//Pops from stack to pointer register (int).
+#define RDC 32		//Reads a char into memory.
+#define RDI 33		//Reads an int into memory.
+#define RDD 34		//Reads a double into memory.
+#define RDS 35		//Reads a string into memory.
+#define RDAC 36		//Reads a char into an array using the offset register.
+#define RDAI 37		//Reads a int into an array using the offset register.
+#define RDAD 38		//Reads a double into an array using the offset register.
+#define RDAS 39		//Reads a string into an array using the offset register.
+#define JMP 40		//Jumps indonditionally to a memory address.
+#define JEQ 41		//Jumps if the top of the stack is (==) 0.
+#define JNE 42		//Jumps if the top of the stack is different than (!=) 0.
+#define JGT 43		//Jumps if the top of the stack is greater than (>) 0.
+#define JGE 44		//Jumps if the top of the stack is greater or equal than (>=) 0.
+#define JLT 45		//Jumps if the top of the stack is less than (<) 0.
+#define JLE 46		//Jumps if the top of the stack is less or equal than (<=) 0.
+#define STX 47		//Stores a variable in the pointer register.
+#define STKX 48		//Stores a constant int in the pointer register.
+#define STY 49		//
+#define	STKY 50		//
+#define INC 51		//Increases the value of a memory address by 1.
+#define RED 52		//Decreases the value of a memory address by 1.
+#define ADD 53		//Pops the two topmost numbers from the stack and adds them. The result is stored in the stack.
+#define SUB 54		//Pops the two topmost numbers from the stack and subtracts them. The result is stored in the stack.
+#define MUL 55		//Pops the two topmost numbers from the stack and multiplies them. The result is stored in the stack.
+#define DIV 56		//Pops the two topmost numbers from the stack and divides them. The result is stored in the stack.
+#define MOD 57		//Pops the two topmost numbers from the stack and divides them. The remainder is stored in the stack.
+#define CMP 58		//Compares 2 stack values by subtracting them and stores the result in the stack.
 #pragma endregion Mapa de Instrucciones a Byte
 
 #pragma region Constantes
@@ -279,6 +279,18 @@ void VMInzunza::run()
 			cout << stringContainer;
 			stringContainer = '\0';
 			break;
+		case WRKS:
+			IP++;
+			charContainer = CS[IP];
+			IP++;
+			unsigned char stringComponent;
+			for (unsigned int i = 0; i < (unsigned int)charContainer; i++) {
+				stringComponent = CS[IP];
+				IP++;
+				cout << stringComponent;
+			}
+			stringContainer = '\0';
+			break;
 
 #pragma endregion
 			/*
@@ -434,7 +446,7 @@ void VMInzunza::run()
 			break;
 		case ADD:
 			IP++;
-			operationADD();
+			//operationADD();
 			break;
 		case SUB:
 			break;
@@ -657,8 +669,8 @@ void VMInzunza::setY(unsigned int direccion)
 }
 
 #pragma endregion
-
-#pragma region Operators' helper functions
+/*
+#pragma region Operators helper functions
 
 // Method that corresponds to the operator INC.
 void VMInzunza::operationINC(unsigned int dir)
@@ -796,3 +808,4 @@ DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
 
 
 
+*/

@@ -39,6 +39,7 @@ private:
 
 	//Methods for operations.
 	//These methods exists to make the operators'code clearer.
+	/*
 	void operationINC(unsigned int dir);
 	void operationRED(unsigned int dir);
 	void operationADD();
@@ -48,7 +49,7 @@ private:
 	void operationMOD();
 	void operationCMP();
 	DATA_TYPE getOperationDataType(Stack_Object so1, Stack_Object so2);
-
+	*/
 	void setX(unsigned int);
 	unsigned int getX();
 	void setY(unsigned int direccion);
