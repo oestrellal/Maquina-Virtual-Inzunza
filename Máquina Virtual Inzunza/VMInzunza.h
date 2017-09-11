@@ -55,12 +55,14 @@ private:
 	void operationCMP();
 	DATA_TYPE getOperationDataType(Stack_Object so1, Stack_Object so2);
 
-	void setX(unsigned int);
+	void setX( int);
 	unsigned int getX();
 	void setY(unsigned int direccion);
 	unsigned int getY();
 
 	unsigned int getDir();
+	unsigned int getDir(int);
+
 
 
 

@@ -198,71 +198,16 @@ bool VMInzunza::load(string dir)
 
 void VMInzunza::run()
 {
-	//hERE WE CAN INPUT TEST CODES
-	/*
-	//Code Segment
-	CS[0] = WR;
-	CS[1] = WRC;
-	CS[2] = '\0';
-	CS[3] = '\0';
-	CS[4] = WR;
-	CS[5] = WRI;
-	CS[6] = '\0';
-	CS[7] = '\0';
-	CS[8] = WR;
-	CS[9] = WRS;
-	CS[10] = '\0';
-	CS[11] = '\0';
-	CS[12] = WR;
-	CS[13] = RDC;
-	CS[14] = '\0';
-	CS[15] = '\0';
-	CS[16] = RDI;
-	CS[17] = '\0';
-	CS[18] = '\1';
-	CS[19] = RDS;
-	CS[20] = '\0';
-	CS[21] = '\5';
-	CS[22] = WR;
-	CS[23] = WRC;
-	CS[24] = '\0';
-	CS[25] = '\0';
-	CS[26] = WR;
-	CS[27] = WRI;
-	CS[28] = '\0';
-	CS[29] = '\1';
-	CS[30] = WR;
-	CS[31] = WRS;
-	CS[32] = '\0';
-	CS[33] = '\5';
-	CS[34] = WR;
-	CS[35] = HALT;
-	*/
-	//Data Segment
-	DS[0] = 'U';
-	DS[1] = 'n';
-	DS[2] = 'i';
-	DS[3] = 't';
-	DS[4] = 'e';
-	DS[5] = 'd';
-	DS[6] = ' ';
-	DS[7] = 'W';
-	DS[8] = 'e';
-	DS[9] = ' ';
-	DS[10] = 'S';
-	DS[11] = 't';
-	DS[12] = 'a';
-	DS[13] = 'n';
-	DS[14] = 'd';
-	DS[15] = '\0';
 	
 
 	unsigned int dir;
+	unsigned int size;
 	unsigned char charContainer;
 	int intContainer;
 	double doubleContainer;
 	bool correctEnd = false;
 	string stringContainer;
+	unsigned char stringComponent;
 	Stack_Object *nuevo;		// Elemento que se va a agregar al stack;
 
 	//Loop
@@ -303,7 +248,6 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			doubleContainer = getDouble(dir);
-			
 			std::cout << to_string(doubleContainer);
 			doubleContainer = 0;
 			break;
@@ -314,11 +258,39 @@ void VMInzunza::run()
 			cout << stringContainer;
 			stringContainer = '\0';
 			break;
+		case WRAC:
+			IP++;
+			dir = getDir() + getX();;
+			std::cout << (char)DS[dir];
+			break;
+			break;
+		case WRAI:
+			IP++;
+			dir = getDir()+getX()*SIZEOFINT;
+			intContainer = getInt(dir);
+			std::cout << to_string(intContainer);
+			intContainer = 0;
+			break;
+		case WRAD:
+			IP++;
+			dir = getDir()+getX()*SIZEOFDOUBLE;
+			doubleContainer = getDouble(dir);
+			std::cout << to_string(doubleContainer);
+			doubleContainer = 0;
+			break;
+		case WRAS:
+			IP++;
+			dir = getDir();
+			size = getDir(1);
+			dir = dir + getX()*size;
+			stringContainer = getString(dir);
+			cout << stringContainer;
+			stringContainer = '\0';
+			break;
 		case WRKS:
 			IP++;
 			charContainer = CS[IP];
 			IP++;
-			unsigned char stringComponent;
 			for (unsigned int i = 0; i < (unsigned int)charContainer; i++) {
 				stringComponent = CS[IP];
 				IP++;
@@ -326,61 +298,97 @@ void VMInzunza::run()
 			}
 			stringContainer = '\0';
 			break;
-
 #pragma endregion
-			/*
+			
 #pragma region Push
 		case PUSHC:
 			IP++;
 			dir = getDir();
-			charContainer = DS[dir];		//CHECAR
+			charContainer = DS[dir];
 			nuevo = new Stack_Object(charContainer);
 			this->stack.push(*nuevo);
 			break;
 		case PUSHI:
 			IP++;
 			dir = getDir();
-			intContainer = DS[dir];		//CHECAR
+			intContainer = getInt(dir);
 			nuevo = new Stack_Object(intContainer);
 			this->stack.push(*nuevo);
 			break;
 		case PUSHD:
 			IP++;
 			dir = getDir();
-			doubleContainer = DS[dir];		//CHECAR
+			doubleContainer = getDouble(dir);
 			nuevo = new Stack_Object(doubleContainer);
 			this->stack.push(*nuevo);
 			break;
 		case PUSHS:
 			IP++;
 			dir = getDir();
-			stringContainer = DS[dir];		//CHECAR
+			stringContainer = getString(dir);
+			nuevo = new Stack_Object(stringContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHKC:
+			IP++;
+			charContainer = CS[IP];
+			nuevo = new Stack_Object(charContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHKI:
+			IP++;
+			intContainer = getInt();
+			nuevo = new Stack_Object(intContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHKD:
+			IP++;
+			doubleContainer = getDouble();
+			nuevo = new Stack_Object(doubleContainer);
+			this->stack.push(*nuevo);
+			break;
+		case PUSHKS:
+			IP++;
+			charContainer = CS[IP];
+			IP++;
+			stringContainer = "";
+			for (unsigned int i = 0; i < (unsigned int)charContainer; i++) {
+				stringComponent = CS[IP];
+				IP++;
+				stringContainer += stringComponent;
+			}
+			stringContainer = '\0';
 			nuevo = new Stack_Object(stringContainer);
 			this->stack.push(*nuevo);
 			break;
 		case PUSHAC:
 			IP++;
 			dir = getDir();
-			charContainer = DS[dir + getX() * SIZEOFCHAR];		//CHECAR
+			charContainer = DS[dir + getX() * SIZEOFCHAR];
 			nuevo = new Stack_Object(charContainer);
 			this->stack.push(*nuevo);
 			break;
 		case PUSHAI:
 			IP++;
 			dir = getDir();
-			intContainer = DS[dir + getX() * SIZEOFINT];		//CHECAR
+			intContainer = getInt(dir + getX() * SIZEOFINT);
 			nuevo = new Stack_Object(intContainer);
 			this->stack.push(*nuevo);
 			break;
 		case PUSHAD:
 			IP++;
 			dir = getDir();
-			doubleContainer = DS[dir + getX() * SIZEOFDOUBLE];		//CHECAR
+			doubleContainer = getDouble(dir + getX() * SIZEOFDOUBLE);		
 			nuevo = new Stack_Object(doubleContainer);
 			this->stack.push(*nuevo);
-			break;*/
+			break;
 		case PUSHAS:
-			// PENDIENTE
+			IP++;
+			dir = getDir();
+			size = getDir(1);
+			stringContainer = getString(dir + getX() * size);
+			nuevo = new Stack_Object(doubleContainer);
+			this->stack.push(*nuevo);
 			break;
 #pragma endregion
 
@@ -388,60 +396,75 @@ void VMInzunza::run()
 		case POPC:
 			IP++;
 			dir = getDir();
-			charContainer=this->stack.pop().Char;
+			nuevo =  &this->stack.top();
+			charContainer=nuevo->Char;
 			DS[ dir]=charContainer;
+			this->stack.pop();
 			break;
 		case POPI:
 			IP++;
 			dir = getDir();
-			intContainer = (this->stack.pop())->Int;
-			setInt( intContainer, dir);
+			nuevo = &this->stack.top();
+			intContainer = nuevo->Int;
+			setInt(intContainer,dir);
+			this->stack.pop();
 			break;
 		case POPD:
 			IP++;
 			dir = getDir();
-			doubleContainer = (this->stack.pop())->Double;
-			setDouble(doubleContainer, dir);
+			nuevo = &this->stack.top();
+			doubleContainer = nuevo->Double;
+			setDouble(doubleContainer,dir);
+			this->stack.pop();
 			break;
 		case POPS:
 			IP++;
 			dir = getDir();
-			stringContainer = (this->stack.pop())->String;
-			setString(stringContainer, dir);
+			nuevo = &this->stack.top();
+			stringContainer = nuevo->String;
+			setString(stringContainer,dir);
+			this->stack.pop();
 			break;
 		case POPAC:
 			IP++;
 			dir = getDir();
-			charContainer = this->stack.pop.Char;
+			nuevo = &this->stack.top();
+			charContainer = nuevo->Char;
 			DS[dir + getX()] = charContainer;
+			this->stack.pop();
 			break;
 		case POPAI:
 			IP++;
 			dir = getDir();
-			intContainer = this->stack.pop.Int;
-			DS[dir + (getX()*4)] = intContainer;
+			nuevo = &this->stack.top();
+			intContainer = nuevo->Int;
+			setInt(intContainer,dir + getX()*SIZEOFINT);
+			this->stack.pop();
 			break;
 		case POPAD:
 			IP++;
 			dir = getDir();
-			doubleContainer = (this->stack.pop()).Double;
-			DS[dir + getX()*8] = doubleContainer;
+			nuevo = &this->stack.top();
+			doubleContainer = nuevo->Double;
+			setDouble(doubleContainer, dir + getX()*SIZEOFDOUBLE);
+			this->stack.pop();
 			break;
 		case POPAS:
 			IP++;
 			dir = getDir();
-			stringContainer = (this->stack.pop()).String;
-			int i;
-			for (i = 0; i < stringContainer.length; i++)
-			{
-				DS[dir + i] = stringContainer[i];
-			}//for
-			DS[dir + i] = '\0';
+			size = getDir(1);
+			nuevo = &this->stack.top();
+	
+			stringContainer = nuevo->String;
+			setString(stringContainer, dir + getX()*size);
+			this->stack.pop();
 			break;
 		case POPX:
 			IP++;
-			intContainer = (this->stack.pop()).Int;
+			nuevo = &this->stack.top();
+			intContainer = nuevo->Int;
 			setX(intContainer);
+			this->stack.pop();
 			break;
 #pragma endregion
 
@@ -450,7 +473,18 @@ void VMInzunza::run()
 		case RDC:
 			IP++;
 			dir = getDir();
-			cin >> charContainer;
+			while (!correctEnd) {
+				try {
+					getline(cin, stringContainer);
+					charContainer= stringContainer[0];
+					correctEnd = true;
+				}
+				catch (std::exception const & e) {
+					//cout << "error: " << e.what() << endl;
+					cout << "error: Not a char.Try again" << endl;
+				}
+			}
+			correctEnd = false;
 			DS[dir] = charContainer;
 			break;
 		case RDI:
@@ -493,18 +527,26 @@ void VMInzunza::run()
 			getline(cin, stringContainer);
 			setString(stringContainer, dir);
 			break;
-			
 		case RDAC:
 			IP++;
 			dir = getDir();
-			cin >> charContainer;
-			DS[dir+getX()] = charContainer;
+			while (!correctEnd) {
+				try {
+					getline(cin, stringContainer);
+					charContainer = stringContainer[0];
+					correctEnd = true;
+				}
+				catch (std::exception const & e) {
+					//cout << "error: " << e.what() << endl;
+					cout << "error: Not a char.Try again" << endl;
+				}
+			}
+			correctEnd = false;
+			DS[dir+ getX()] = charContainer;
 			break;
 		case RDAI:
 			IP++;
-			dir = getDir();
-			cin >> intContainer;
-			dir=dir+getX()*4;
+			dir = getDir()+ getX()*SIZEOFINT;
 			while (!correctEnd) {
 				try {
 					getline(cin, stringContainer);
@@ -521,7 +563,7 @@ void VMInzunza::run()
 			break;
 		case RDAD:
 			IP++;
-			dir = getDir();
+			dir = getDir()+getX()*SIZEOFDOUBLE;
 			while (!correctEnd) {
 				try {
 					getline(cin, stringContainer);
@@ -534,15 +576,14 @@ void VMInzunza::run()
 				}
 			}
 			correctEnd = false;			
-			dir = dir + getX()*8;
 			setDouble(doubleContainer,dir);
 			break;
 		case RDAS:
 			IP++;
 			dir = getDir();
-			intContainer = getDir();
+			size = getDir(1);
 			getline(cin, stringContainer);
-			dir = dir + getX()*intContainer;
+			dir = dir + getX()*size;
 			setString(stringContainer, dir);
 			break;
 
@@ -562,7 +603,7 @@ void VMInzunza::run()
 			break;
 		case STKX:
 			IP++;
-			intContainer = getInt();
+			intContainer = getDir();
 			if (intContainer < 0) {
 				cout << "[FATAL ERROR] Index lower than 0" << endl;
 				return;
@@ -574,13 +615,22 @@ void VMInzunza::run()
 
 #pragma region Operators
 		case INC:
-
+			IP++;
+			dir = getDir();
+			intContainer = getInt(dir);
+			intContainer++;
+			setInt(intContainer, dir);
 			break;
 		case RED:
+			IP++;
+			dir = getDir();
+			intContainer = getInt(dir);
+			intContainer--;
+			setInt(intContainer, dir);
 			break;
 		case ADD:
 			IP++;
-			//operationADD();
+			operationADD();
 			break;
 		case SUB:
 			IP++;
@@ -663,6 +713,11 @@ unsigned int VMInzunza::getDir() {
 	u.byte[3] = 0;
 	IP += 2;
 	return u.value;
+}
+unsigned int VMInzunza::getDir(int) {
+	unsigned char temp= CS[IP];
+	IP++;
+	return (unsigned int)temp;
 }
 
 int VMInzunza::getInt(unsigned int dir) {
@@ -800,7 +855,7 @@ void VMInzunza::setString(string toSave, unsigned int dir)
 }
 
 //validates that the offset register is valid
-void VMInzunza::setX(unsigned int direccion)
+void VMInzunza::setX(int direccion)
 {
 	X = direccion;
 }
@@ -957,7 +1012,7 @@ void VMInzunza::operationSUB()
 	so1 = stack.top();
 	stack.pop();
 
-	switch (so1.Char)
+	switch (so1.Char)//CHECKRENE
 	{
 	case Char:
 		switch (so2.tipo)
@@ -1069,8 +1124,9 @@ void VMInzunza::operationCMP()
 	stack.pop();
 	so1 = stack.top();
 	stack.pop();
-
-	switch (so1.Char)
+	
+	switch(so1.tipo)
+	//switch (so1.Char) //RENECHECK
 	{
 	case Char:
 		switch (so2.tipo)

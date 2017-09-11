@@ -12,9 +12,14 @@ public:
 	Stack_Object(int dato);
 	Stack_Object(double dato);
 	Stack_Object(std::string dato);
-	~Stack_Object();
-	
-	Stack_Object& operator=(const Stack_Object& so);
+
+	~Stack_Object(); //destructor
+	Stack_Object(const Stack_Object& so);//copy constructor
+	Stack_Object(const Stack_Object&& so);//move constructor
+	Stack_Object& operator=(const Stack_Object& so); //copy assignment
+	Stack_Object& operator=(const Stack_Object&& so); //move assignment
+
+
 
 	DATA_TYPE tipo;	//Data type corresponding to this element.
 	

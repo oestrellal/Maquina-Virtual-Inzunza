@@ -37,7 +37,31 @@ Stack_Object::Stack_Object(std::string dato)
 
 Stack_Object::~Stack_Object()
 {
-	// Me da flojera pensar cómo se tenía que programar ésto xd.
+	int i = 0;
+}
+
+Stack_Object::Stack_Object(const Stack_Object & so)
+{
+	this->tipo = so.tipo;
+	switch (so.tipo) {
+	case DATA_TYPE::Double:
+
+		this->Double = so.Double;
+		break;
+	case DATA_TYPE::Integer:
+		this->Int = so.Int;
+		break;
+	case DATA_TYPE::String:
+		this->String = so.String;
+		break;
+	case DATA_TYPE::Char:
+		this->Char = so.Char;
+		break;
+	}
+}
+
+Stack_Object::Stack_Object(const Stack_Object && so)
+{
 }
 
 Stack_Object & Stack_Object::operator=(const Stack_Object & so)
@@ -61,5 +85,10 @@ Stack_Object & Stack_Object::operator=(const Stack_Object & so)
 		break;
 	}
 
+	return *this;
+}
+
+Stack_Object & Stack_Object::operator=(const Stack_Object && so)
+{
 	return *this;
 }
