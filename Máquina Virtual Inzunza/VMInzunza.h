@@ -25,6 +25,9 @@ private:
 
 	const string identifier= "UM-MEAN-C";
 
+	// Error handling. Its separated in case we want to change this in our compilers.
+	void reportError(string msg);
+
 	//Get data from Data or Code Segment
 
 	string getString(unsigned int);//gets a string from specified data address
@@ -66,7 +69,7 @@ private:
 	unsigned int Y; //size of strings in string array
 	unsigned char* CS; //code segment
 	unsigned char* DS; //data segment
-	int flag; //value changes after cmp is casted
+	double flag; //value changes after cmp is casted
 	
 };
 

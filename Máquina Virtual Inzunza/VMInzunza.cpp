@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "VMInzunza.h"
+#include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -581,6 +583,8 @@ void VMInzunza::run()
 			//operationADD();
 			break;
 		case SUB:
+			IP++;
+			operationSUB();
 			break;
 		case MUL:
 			break;
@@ -589,6 +593,8 @@ void VMInzunza::run()
 		case MOD:
 			break;
 		case CMP:
+			IP++;
+			operationCMP();
 			break;
 #pragma endregion
 
@@ -714,6 +720,11 @@ double VMInzunza::getDouble() {
 
 }
 
+void VMInzunza::reportError(string msg)
+{
+	cout << msg << endl;
+}
+
 //Gets a string until it finds the null char
 string VMInzunza::getString(unsigned int dir) {
 	unsigned int next = dir;
@@ -802,7 +813,7 @@ void VMInzunza::setY(unsigned int direccion)
 
 #pragma endregion
 
-#pragma region Operators helper functions
+#pragma region Operator helper functions
 
 // Method that corresponds to the operator INC.
 void VMInzunza::operationINC(unsigned int dir)
@@ -817,14 +828,15 @@ void VMInzunza::operationRED(unsigned int dir)
 // Method that corresponds to the smart operator ADD.
 void VMInzunza::operationADD()
 {
-	char c, int i, double d;
+	char c;
+	int i;
+	double d;
 	string s;
-	DATA_TYPE tipo;
 	Stack_Object so1, so2, *nuevo;
 
-	so1 = stack.top();
-	stack.pop();
 	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
 	stack.pop();
 
 	switch (so1.Char)
@@ -850,6 +862,7 @@ void VMInzunza::operationADD()
 			nuevo = new Stack_Object(s);
 			break;
 		default:
+			reportError("ERROR INESPERADO EN ADD!!!!1!");
 			break;
 		}
 		break;
@@ -874,6 +887,7 @@ void VMInzunza::operationADD()
 			nuevo = new Stack_Object(s);
 			break;
 		default:
+			reportError("ERROR INESPERADO EN ADD!!!!1!");
 			break;
 		}
 		break;
@@ -898,6 +912,7 @@ void VMInzunza::operationADD()
 			nuevo = new Stack_Object(s);
 			break;
 		default:
+			reportError("ERROR INESPERADO EN ADD!!!!1!");
 			break;
 		}
 		break;
@@ -921,6 +936,7 @@ void VMInzunza::operationADD()
 		nuevo = new Stack_Object(s);
 		break;
 	default:
+		reportError("ERROR INESPERADO EN ADD!!!!1!");
 		break;
 	}
 
@@ -930,6 +946,97 @@ void VMInzunza::operationADD()
 // Method that corresponds to the smart operator SUB.
 void VMInzunza::operationSUB()
 {
+	char c;
+	int i;
+	double d;
+	string s;
+	Stack_Object so1, so2, *nuevo;
+
+	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
+	stack.pop();
+
+	switch (so1.Char)
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char - so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int)so1.Char - so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Char - so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int - (int)so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int - so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Int - so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = so1.Double - (double)so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = so1.Double - so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double - so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case String:
+		reportError("ERROR: no se puede restar un string.");
+		break;
+	default:
+		reportError("ERROR INESPERADO EN SUB!!!!1!");
+		break;
+	}
+
+	this->stack.push(*nuevo);
 }
 
 // Method that corresponds to the smart operator MUL.
@@ -951,33 +1058,102 @@ void VMInzunza::operationMOD()
 // Method that corresponds to the operator CMP.
 void VMInzunza::operationCMP()
 {
+	// Igual que la resta en algunos casos
+	char c;
+	int i;
+	double d;
+	string s;
+	Stack_Object so1, so2;
+
+	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
+	stack.pop();
+
+	switch (so1.Char)
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char - so2.Char;
+			flag = (double)c;
+			break;
+		case Integer:
+		case Double:
+		case String:
+			flag = -1;
+			break;
+		default:
+			reportError("ERROR INESPERADO EN CMP!!!!1!");
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			flag = -1;
+			break;
+		case Integer:
+			i = so1.Int - so2.Int;
+			flag = i;
+			break;
+		case Double:
+			d = so1.Int - so2.Double;
+			flag = d;
+			break;
+		case String:
+			flag = -1;
+			break;
+		default:
+			reportError("ERROR INESPERADO EN CMP!!!!1!");
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			flag = -1;
+			break;
+		case Integer:
+			d = so1.Double - so2.Int;
+			flag = d;
+			break;
+		case Double:
+			d = so1.Double - so2.Double;
+			flag = d;
+			break;
+		case String:
+			flag = -1;
+			break;
+		default:
+			reportError("ERROR INESPERADO EN CMP!!!!1!");
+			break;
+		}
+		break;
+	case String:
+		switch (so2.tipo)
+		{
+		case Char:
+		case Integer:
+		case Double:
+			flag = -1;
+		case String:
+			flag = so1.String.compare(so2.String);
+			break;
+		default:
+			reportError("ERROR INESPERADO EN CMP!!!!1!");
+			break;
+		}
+		break;
+	default:
+		reportError("ERROR INESPERADO EN CMP!!!!1!");
+		break;
+	}
 }
 
-// Method that corresponds to the smart operator SUB.
-void VMInzunza::operationSUB()
-{
-}
-
-// Method that corresponds to the smart operator MUL.
-void VMInzunza::operationMUL()
-{
-}
-
-// Method that corresponds to the smart operator DIV.
-void VMInzunza::operationDIV()
-{
-}
-
-// Method that corresponds to the smart operator MOD.
-void VMInzunza::operationMOD()
-{
-}
-
-
-// Method that corresponds to the operator CMP.
-void VMInzunza::operationCMP()
-{
-}
 
 
 #pragma endregion

@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
 		dir = argv[1];
 		vm.load(dir);
 		vm.run();
-
 	}
 	else {
 		cout << "Please provide source and destination params" << endl;
