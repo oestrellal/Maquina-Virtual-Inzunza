@@ -21,7 +21,7 @@ public:
 	void run();
 
 private:
-	//stack<Stack_Object> stack;	//The operation stack.
+	stack<Stack_Object> stack;	//The operation stack.
 
 	const string identifier= "UM-MEAN-C";
 
@@ -36,13 +36,12 @@ private:
 
 	//Save values into memory
 	//These methods receive the value to save depending on the type od data, end the DS where they need to be saved
-	void setInteger(int, unsigned int dir);
+	void setInt(int, unsigned int dir);
 	void setDouble(double, unsigned int dir);
 	void setString(string, unsigned int dir);
 
 	//Methods for operations.
 	//These methods exists to make the operators'code clearer.
-	/*
 	void operationINC(unsigned int dir);
 	void operationRED(unsigned int dir);
 	void operationADD();
@@ -52,7 +51,7 @@ private:
 	void operationMOD();
 	void operationCMP();
 	DATA_TYPE getOperationDataType(Stack_Object so1, Stack_Object so2);
-	*/
+
 	void setX(unsigned int);
 	unsigned int getX();
 	void setY(unsigned int direccion);

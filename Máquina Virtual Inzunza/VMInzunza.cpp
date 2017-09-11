@@ -120,7 +120,7 @@ BOOL CtrlHandler(DWORD fdwCtrlType)
 	}
 }
 
-//Encargado de leer archivo, verificar identificador, cardar porción de código y datos, e iniciar IP en 0
+//Encargado de leer archivo, verificar identificador, cardar porciÃ³n de cÃ³digo y datos, e iniciar IP en 0
 bool VMInzunza::load(string dir)
 {
 	ifstream infile;
@@ -179,7 +179,7 @@ bool VMInzunza::load(string dir)
 	sizeData.byte[3] = 0;
 	i += 2;
 
-	//error: check why ó is 242 instead of 168
+	//error: check why Ã³ is 242 instead of 168
 	CS = new unsigned char[sizeCode.value];
 	DS = new unsigned char[sizeData.value];
 
@@ -383,7 +383,64 @@ void VMInzunza::run()
 #pragma endregion
 
 #pragma region Pop
-
+		/*case POPC:
+			IP++;
+			dir = getDir();
+			charContainer=this->stack.pop().Char;
+			DS[ dir]=charContainer;
+			break;
+		case POPI:
+			IP++;
+			dir = getDir();
+			intContainer = (this->stack.pop())->Int;
+			setInt( intContainer, dir);
+			break;
+		case POPD:
+			IP++;
+			dir = getDir();
+			doubleContainer = (this->stack.pop())->Double;
+			setDouble(doubleContainer, dir);
+			break;
+		case POPS:
+			IP++;
+			dir = getDir();
+			stringContainer = (this->stack.pop())->String;
+			setString(stringContainer, dir);
+			break;
+		case POPAC:
+			IP++;
+			dir = getDir();
+			charContainer = this->stack.pop.Char;
+			DS[dir + getX()] = charContainer;
+			break;
+		case POPAI:
+			IP++;
+			dir = getDir();
+			intContainer = this->stack.pop.Int;
+			DS[dir + (getX()*4)] = intContainer;
+			break;
+		case POPAD:
+			IP++;
+			dir = getDir();
+			doubleContainer = (this->stack.pop()).Double;
+			DS[dir + getX()*8] = doubleContainer;
+			break;
+		case POPAS:
+			IP++;
+			dir = getDir();
+			stringContainer = (this->stack.pop()).String;
+			int i;
+			for (i = 0; i < stringContainer.length; i++)
+			{
+				DS[dir + i] = stringContainer[i];
+			}//for
+			DS[dir + i] = '\0';
+			break;
+		case POPX:
+			IP++;
+			intContainer = (this->stack.pop()).Int;
+			setX(intContainer);
+			break;*/
 #pragma endregion
 
 #pragma region Read
@@ -762,28 +819,114 @@ void VMInzunza::operationADD()
 {
 	char c, int i, double d;
 	string s;
+	DATA_TYPE tipo;
 	Stack_Object so1, so2, *nuevo;
-								// QUE PASA SI SE HACE UN POP Y EL STACK ESTA VACIO???
+
 	so1 = stack.top();
 	stack.pop();
 	so2 = stack.top();
 	stack.pop();
 
-	
+	switch (so1.Char)
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char + so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int)so1.Char + so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Char + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Char;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
+			break;
+		default:
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int + (int)so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int + so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Int + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Int;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
+			break;
+		default:
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = so1.Double + (double)so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = so1.Double + so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double + so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			s = so1.Double;
+			s.append(so2.String);
+			nuevo = new Stack_Object(s);
+			break;
+		default:
+			break;
+		}
+		break;
+	case String:
+		switch (so2.tipo)
+		{
+		case Char:
+			s = so1.Char;
+			break;
+		case Integer:
+			s = so1.Int;
+			break;
+		case Double:
+			s = so1.Double;
+			break;
+		default:
+			s = so1.String;
+			break;
+		}
+		s.append(so2.String);
+		nuevo = new Stack_Object(s);
+		break;
+	default:
+		break;
+	}
+
+	this->stack.push(*nuevo);
 }
 
-//Gets a string until it finds the null char
-string VMInzunza::getString(unsigned int dir) {
-	unsigned int next = dir;
-	string value = "";
-	char temp = DS[next];
-
-	while (DS[next] != '\0') {
-		value += DS[next];
-		next++;
-		temp = DS[next];
-	}
-	return value;
 // Method that corresponds to the smart operator SUB.
 void VMInzunza::operationSUB()
 {
@@ -810,72 +953,32 @@ void VMInzunza::operationCMP()
 {
 }
 
-// Determines the data type of the resulting operation to be efectuated in the stack.
-DATA_TYPE VMInzunza::getOperationDataType(Stack_Object so1, Stack_Object so2)
+// Method that corresponds to the smart operator SUB.
+void VMInzunza::operationSUB()
 {
-	//TODO ESTE COCHINERO SE PUEDE HACER MAS EFICIENTE.
-	switch (so1.tipo)
-	{
-	case DATA_TYPE::Char:
-		switch (so2.tipo)
-		{
-		case DATA_TYPE::Char:
-			return DATA_TYPE::Char;
-			break;
-		case DATA_TYPE::Integer:
-			return DATA_TYPE::Integer;
-			break;
-		case DATA_TYPE::Double:
-			return DATA_TYPE::Double;
-			break;
-		case DATA_TYPE::String:
-			return DATA_TYPE::String;
-			break;
-		default:
-			break;
-		}
-		break;
-	case DATA_TYPE::Integer:
-		switch (so2.tipo)
-		{
-		case DATA_TYPE::Char:
-		case DATA_TYPE::Integer:
-			return DATA_TYPE::Integer;
-			break;
-		case DATA_TYPE::Double:
-			return DATA_TYPE::Double;
-			break;
-		case DATA_TYPE::String:
-			return DATA_TYPE::String;
-			break;
-		default:
-			break;
-		}
-		break;
-	case DATA_TYPE::Double:
-		switch (so2.tipo)
-		{
-		case DATA_TYPE::Char:
-		case DATA_TYPE::Integer:
-		case DATA_TYPE::Double:
-			return DATA_TYPE::Double;
-			break;
-		case DATA_TYPE::String:
-			return DATA_TYPE::String;
-			break;
-		default:
-			break;
-		}
-		break;
-	case DATA_TYPE::String:
-		return DATA_TYPE::String;
-		break;
-	default:
-		break;
-	}
-
-	return DATA_TYPE::Double; //En caso de que algo salga mal.
 }
+
+// Method that corresponds to the smart operator MUL.
+void VMInzunza::operationMUL()
+{
+}
+
+// Method that corresponds to the smart operator DIV.
+void VMInzunza::operationDIV()
+{
+}
+
+// Method that corresponds to the smart operator MOD.
+void VMInzunza::operationMOD()
+{
+}
+
+
+// Method that corresponds to the operator CMP.
+void VMInzunza::operationCMP()
+{
+}
+
 
 #pragma endregion
 
