@@ -383,7 +383,7 @@ void VMInzunza::run()
 #pragma endregion
 
 #pragma region Pop
-		/*case POPC:
+		case POPC:
 			IP++;
 			dir = getDir();
 			charContainer=this->stack.pop().Char;
@@ -440,7 +440,7 @@ void VMInzunza::run()
 			IP++;
 			intContainer = (this->stack.pop()).Int;
 			setX(intContainer);
-			break;*/
+			break;
 #pragma endregion
 
 #pragma region Read
@@ -466,7 +466,7 @@ void VMInzunza::run()
 				}
 			}
 			correctEnd = false;
-			setInteger(intContainer,dir);
+			setInt(intContainer,dir);
 			break;
 		case RDD:
 			IP++;
@@ -515,7 +515,7 @@ void VMInzunza::run()
 				}
 			}
 			correctEnd = false;
-			setInteger(intContainer,dir);
+			setInt(intContainer,dir);
 			break;
 		case RDAD:
 			IP++;
@@ -753,7 +753,7 @@ unsigned int VMInzunza::getY()
 
 #pragma region Setters
 
-void VMInzunza::setInteger(int toSave, unsigned int dir)
+void VMInzunza::setInt(int toSave, unsigned int dir)
 {
 	union
 	{
@@ -801,7 +801,7 @@ void VMInzunza::setY(unsigned int direccion)
 }
 
 #pragma endregion
-/*
+
 #pragma region Operators helper functions
 
 // Method that corresponds to the operator INC.
@@ -986,4 +986,3 @@ void VMInzunza::operationCMP()
 
 
 
-*/
