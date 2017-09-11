@@ -141,14 +141,6 @@ bool VMInzunza::load(string dir)
 	vector<unsigned char> oData(length);
 	infile.read((char*)&oData[0], length);
 
-	//oData= new unsigned char[length+1];
-	//infile.read( (char*)oData, length);
-
-	/*
-	for (int i = 0; i < length+1; i++) {
-		cout << oData[i] << endl;
-	}
-	*/
 	int i = 0;
 
 
@@ -439,7 +431,7 @@ void VMInzunza::run()
 		case RDS:
 			IP++;
 			dir = getDir();
-			cin >> stringContainer;//error: change to read full line
+			getline(cin, stringContainer);
 			setString(stringContainer, dir);
 			break;
 			
@@ -482,19 +474,17 @@ void VMInzunza::run()
 					cout << "error: Not a double.Try again" << endl;
 				}
 			}
-			correctEnd = false;			dir = dir + getX()*8;
+			correctEnd = false;			
+			dir = dir + getX()*8;
 			setDouble(doubleContainer,dir);
 			break;
 		case RDAS:
 			IP++;
 			dir = getDir();
-			cin >> stringContainer;
-			dir = dir + getX()*getY();
-			int i;
-			for (i = 0; i < stringContainer.length(); i++) {
-				DS[dir + i] = stringContainer[i];
-			}
-			DS[dir + i] = '\0';
+			intContainer = getDir();
+			getline(cin, stringContainer);
+			dir = dir + getX()*intContainer;
+			setString(stringContainer, dir);
 			break;
 
 #pragma endregion
