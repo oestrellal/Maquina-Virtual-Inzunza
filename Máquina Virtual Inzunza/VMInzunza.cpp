@@ -343,7 +343,7 @@ void VMInzunza::run()
 			IP++;
 			dir = getDir();
 			charContainer=this->stack.pop().Char;
-			DS[ dir]=charContainer;
+			DS[dir]=charContainer;
 			break;
 		case POPI:
 			IP++;
@@ -486,9 +486,12 @@ void VMInzunza::run()
 
 #pragma region Operators
 		case INC:
-
+			IP++;
+			operationINC(IP);
 			break;
 		case RED:
+			IP++;
+			operationRED(IP);
 			break;
 		case ADD:
 			IP++;
@@ -730,11 +733,17 @@ void VMInzunza::setY(unsigned int direccion)
 // Method that corresponds to the operator INC.
 void VMInzunza::operationINC(unsigned int dir)
 {
+	int temp = getInt(dir);
+	temp++;
+	setInt(temp, dir);
 }
 
 // Method that corresponds to the operator RED.
 void VMInzunza::operationRED(unsigned int dir)
 {
+	int temp = getInt(dir);
+	temp--;
+	setInt(temp, dir);
 }
 
 // Method that corresponds to the smart operator ADD.
@@ -869,7 +878,7 @@ void VMInzunza::operationSUB()
 	so1 = stack.top();
 	stack.pop();
 
-	switch (so1.Char)
+	switch (so1.Char) // no deberia ser 'so1.tipo'? igual en operationADD() y operationCMP()
 	{
 	case Char:
 		switch (so2.tipo)
@@ -954,6 +963,138 @@ void VMInzunza::operationSUB()
 // Method that corresponds to the smart operator MUL.
 void VMInzunza::operationMUL()
 {
+	char c;
+	int i;
+	double d;
+	string s, temp;
+	Stack_Object so1, so2, *nuevo;
+
+	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
+	stack.pop();
+	
+	switch (so1.tipo)
+	{
+	case Char:
+		switch (so2.tipo) 
+		{
+		case Char:
+			c = so1.Char * so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int) so1.Char * so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double) so1.Char * so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("Error: Char * String? Queeseso?");
+			break;
+		default:
+			reportError("Error en operationMUL(): switch (so2.tipo)");
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int * (int) so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int * so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double) so1.Int * (double) so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			temp = so2.String;
+
+			for (int counter = so1.Int; i > 0; i--)
+				s += temp;
+
+			nuevo = new Stack_Object(s);
+
+			break;
+		default:
+			reportError("Error en operationMUL(): switch (so2.tipo)");
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = so1.Double * (double) so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = so1.Double * (double)so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double * so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			temp = so2.String;
+
+			for (int counter = (int)trunc(so1.Double); i > 0; i--)
+				s += temp;
+
+			nuevo = new Stack_Object(s);
+
+			break;
+		default:
+			reportError("Error en operationMUL(): switch (so2.tipo)");
+			break;
+		}
+		break;
+	case String:
+		switch (so2.tipo)
+		{
+		case Char:
+			reportError("Error: Char * String? Queeseso?");
+			break;
+		case Integer:
+			temp = so1.String;
+
+			for (int counter = so2.Int; i > 0; i--)
+				s += temp;
+
+			nuevo = new Stack_Object(s);
+
+			break;
+		case Double:
+			temp = so1.String;
+
+			for (int counter = (int)trunc(so2.Double); i > 0; i--)
+				s += temp;
+
+			nuevo = new Stack_Object(s);
+
+			break;
+		case String:
+			reportError("Error: String * String? magia negra?");
+			break;
+		default:
+			reportError("Error en operationMUL(): switch (so2.tipo)");
+			break;
+		}
+		break;
+	default:
+		reportError("Error en operationMUL(): switch (so2.tipo)");
+		break;
+	}
+
+	this->stack.push(*nuevo);
 }
 
 // Method that corresponds to the smart operator DIV.
