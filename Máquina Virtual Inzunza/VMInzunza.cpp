@@ -91,30 +91,32 @@ BOOL CtrlHandler(DWORD fdwCtrlType)
 	{
 		// Handle the CTRL-C signal. 
 	case CTRL_C_EVENT:
-		printf("Ctrl-C event\n\n");
-		Beep(750, 300);
+		exit(1);
 		return(TRUE);
 
 		// CTRL-CLOSE: confirm that the user wants to exit. 
 	case CTRL_CLOSE_EVENT:
-		Beep(600, 200);
 		printf("Ctrl-Close event\n\n");
+		exit(1);
 		return(TRUE);
 
 		// Pass other signals to the next handler. 
 	case CTRL_BREAK_EVENT:
 		Beep(900, 200);
 		printf("Ctrl-Break event\n\n");
+		exit(1);
 		return FALSE;
 
 	case CTRL_LOGOFF_EVENT:
 		Beep(1000, 200);
 		printf("Ctrl-Logoff event\n\n");
+		exit(1);
 		return FALSE;
 
 	case CTRL_SHUTDOWN_EVENT:
 		Beep(750, 500);
 		printf("Ctrl-Shutdown event\n\n");
+		exit(1);
 		return FALSE;
 
 	default:
@@ -127,7 +129,10 @@ bool VMInzunza::load(string dir)
 {
 	ifstream infile;
 	size_t length = 0;
-
+	if (!infile.good()) {
+		cout << "File doesnt exists." << endl;
+		exit(1);
+	}
 	infile.open(dir, ios::in | ios::binary);
 
 	infile.seekg(0, infile.end);
@@ -498,7 +503,7 @@ void VMInzunza::run()
 				}
 				catch (std::exception const & e) {
 					//cout << "error: " << e.what() << endl;
-					cout << "error: Not an integer.Try again" << endl;
+					cout << "error: Not an integer.Try again"<<endl;
 				}
 			}
 			correctEnd = false;
@@ -637,10 +642,16 @@ void VMInzunza::run()
 			operationSUB();
 			break;
 		case MUL:
+			IP++;
+			operationMUL();
 			break;
 		case DIV:
+			IP++;
+			operationDIV();
 			break;
 		case MOD:
+			IP++;
+			operationMOD();
 			break;
 		case CMP:
 			IP++;
@@ -893,8 +904,8 @@ void VMInzunza::operationADD()
 	stack.pop();
 	so1 = stack.top();
 	stack.pop();
-
-	switch (so1.Char)
+	switch(so1.tipo)
+	//switch (so1.Char)
 	{
 	case Char:
 		switch (so2.tipo)
@@ -1011,8 +1022,8 @@ void VMInzunza::operationSUB()
 	stack.pop();
 	so1 = stack.top();
 	stack.pop();
-
-	switch (so1.Char)//CHECKRENE
+	switch(so1.tipo)
+	//switch (so1.Char)//CHECKRENE
 	{
 	case Char:
 		switch (so2.tipo)
@@ -1097,16 +1108,289 @@ void VMInzunza::operationSUB()
 // Method that corresponds to the smart operator MUL.
 void VMInzunza::operationMUL()
 {
+	char c;
+	int i;
+	double d;
+	string s;
+	Stack_Object so1, so2, *nuevo;
+
+	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
+	stack.pop();
+	switch (so1.tipo)
+		//switch (so1.Char)//CHECKRENE
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char * so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int)so1.Char * so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Char * so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede multiplicar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int * (int)so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int * so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Int * so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = so1.Double * (double)so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = so1.Double * so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double * so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case String:
+		reportError("ERROR: no se puede restar un string.");
+		break;
+	default:
+		reportError("ERROR INESPERADO EN SUB!!!!1!");
+		break;
+	}
+
+	this->stack.push(*nuevo);
 }
 
 // Method that corresponds to the smart operator DIV.
 void VMInzunza::operationDIV()
 {
+	char c;
+	int i;
+	double d;
+	string s;
+	Stack_Object so1, so2, *nuevo;
+
+	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
+	stack.pop();
+	switch (so1.tipo)
+		//switch (so1.Char)//CHECKRENE
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char / so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int)so1.Char / so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Char / so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int / (int)so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int / so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (double)so1.Int / so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = so1.Double / (double)so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = so1.Double / so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = so1.Double / so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case String:
+		reportError("ERROR: no se puede restar un string.");
+		break;
+	default:
+		reportError("ERROR INESPERADO EN SUB!!!!1!");
+		break;
+	}
+
+	this->stack.push(*nuevo);
 }
 
 // Method that corresponds to the smart operator MOD.
 void VMInzunza::operationMOD()
 {
+	char c;
+	int i;
+	double d;
+	string s;
+	Stack_Object so1, so2, *nuevo;
+
+	so2 = stack.top();
+	stack.pop();
+	so1 = stack.top();
+	stack.pop();
+	switch (so1.tipo)
+		//switch (so1.Char)//CHECKRENE
+	{
+	case Char:
+		switch (so2.tipo)
+		{
+		case Char:
+			c = so1.Char % so2.Char;
+			nuevo = new Stack_Object(c);
+			break;
+		case Integer:
+			i = (int)so1.Char % so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = (int) so1.Char % (int) so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Integer:
+		switch (so2.tipo)
+		{
+		case Char:
+			i = so1.Int % (int)so2.Char;
+			nuevo = new Stack_Object(i);
+			break;
+		case Integer:
+			i = so1.Int % so2.Int;
+			nuevo = new Stack_Object(i);
+			break;
+		case Double:
+			d = so1.Int % (int) so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case Double:
+		switch (so2.tipo)
+		{
+		case Char:
+			d = (int) so1.Double % (int)so2.Char;
+			nuevo = new Stack_Object(d);
+			break;
+		case Integer:
+			d = (int) so1.Double % so2.Int;
+			nuevo = new Stack_Object(d);
+			break;
+		case Double:
+			d = (int) so1.Double % (int) so2.Double;
+			nuevo = new Stack_Object(d);
+			break;
+		case String:
+			reportError("ERROR: no se puede restar un string.");
+			break;
+		default:
+			reportError("ERROR INESPERADO EN SUB!!!!1!");
+			break;
+		}
+		break;
+	case String:
+		reportError("ERROR: no se puede restar un string.");
+		break;
+	default:
+		reportError("ERROR INESPERADO EN SUB!!!!1!");
+		break;
+	}
+
+	this->stack.push(*nuevo);
 }
 
 
